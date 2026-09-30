@@ -1,0 +1,39 @@
+# Texto con fin de línea LF para todos (Windows incluido)
+* text=auto eol=lf
+
+# ── Git LFS: archivos binarios pesados ──────────────────
+# Requiere `git lfs install` una vez en cada computadora.
+
+# Blender (lockable: permite `git lfs lock` para evitar que dos personas editen el mismo .blend)
+*.blend filter=lfs diff=lfs merge=lfs -text lockable
+
+# Modelos 3D
+*.glb   filter=lfs diff=lfs merge=lfs -text
+*.fbx   filter=lfs diff=lfs merge=lfs -text
+*.obj   filter=lfs diff=lfs merge=lfs -text
+*.bin   filter=lfs diff=lfs merge=lfs -text
+
+# Texturas e imágenes
+*.png   filter=lfs diff=lfs merge=lfs -text
+*.jpg   filter=lfs diff=lfs merge=lfs -text
+*.jpeg  filter=lfs diff=lfs merge=lfs -text
+*.tga   filter=lfs diff=lfs merge=lfs -text
+*.exr   filter=lfs diff=lfs merge=lfs -text
+*.hdr   filter=lfs diff=lfs merge=lfs -text
+*.psd   filter=lfs diff=lfs merge=lfs -text
+*.kra   filter=lfs diff=lfs merge=lfs -text
+*.webp  filter=lfs diff=lfs merge=lfs -text
+
+# Audio
+*.wav   filter=lfs diff=lfs merge=lfs -text
+*.ogg   filter=lfs diff=lfs merge=lfs -text
+*.mp3   filter=lfs diff=lfs merge=lfs -text
+
+# Video y fuentes
+*.mp4   filter=lfs diff=lfs merge=lfs -text
+*.ttf   filter=lfs diff=lfs merge=lfs -text
+*.otf   filter=lfs diff=lfs merge=lfs -text
+
+# Documentos binarios
+*.pdf   filter=lfs diff=lfs merge=lfs -text
+*.docx  filter=lfs diff=lfs merge=lfs -text

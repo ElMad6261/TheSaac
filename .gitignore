@@ -1,0 +1,36 @@
+# ── Godot 4 ──────────────────────────────────────────────
+# Caché del editor e importaciones (se regenera sola)
+.godot/
+/android/
+
+# ── Godot .NET / C# ──────────────────────────────────────
+.mono/
+data_*/
+mono_crash.*.json
+bin/
+obj/
+*.user
+*.suo
+
+# ── Builds exportados ───────────────────────────────────
+/builds/
+/export/
+*.exe
+*.pck
+*.zip
+
+# ── Blender ─────────────────────────────────────────────
+# Respaldos automáticos (.blend1, .blend2, ...)
+*.blend[0-9]
+*.blend[0-9][0-9]
+*.blend@
+
+# ── Editores / IDE ──────────────────────────────────────
+.vs/
+.vscode/
+.idea/
+
+# ── Sistema operativo ───────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
