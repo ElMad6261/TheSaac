@@ -1,0 +1,9 @@
+# Catalogos del Asset Browser de TheSaac.
+# Formato: UUID:ruta/del/catalogo:nombre_simple
+
+VERSION 1
+
+6a1f3c2e-4b5d-4e8f-9a01-2b3c4d5e6f01:TheSaac/Muros:TheSaac-Muros
+6a1f3c2e-4b5d-4e8f-9a01-2b3c4d5e6f02:TheSaac/Pisos:TheSaac-Pisos
+6a1f3c2e-4b5d-4e8f-9a01-2b3c4d5e6f03:TheSaac/Puertas:TheSaac-Puertas
+6a1f3c2e-4b5d-4e8f-9a01-2b3c4d5e6f04:TheSaac/Detalles:TheSaac-Detalles
