@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-generar_kit.py - Regenera las texturas y los 12 .blend del kit modular de TheSaac.
+generar_kit.py - Regenera las texturas y los .blend del kit modular de TheSaac:
+las 12 piezas y las variantes de puerta de la sala del tesoro y de la sala del jefe.
 
 Uso, desde la raiz del repositorio (Blender 5.1):
     blender --background --factory-startup --python tools/blender/generar_kit.py
@@ -14,15 +15,18 @@ import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import kit_isaac as kit
 import kit_piezas as piezas
+import texturas_v2
+import variantes_puerta
 
 kit.preparar()
 kit.generar_texturas()
-piezas.borde_superior("T_Muro_Piedra")
-piezas.borde_superior("T_Pilar_Piedra")
+texturas_v2.generar()       # muros, pilar y puertas v2 (reemplazan a las v1; ya traen la linea negra de arriba)
 for i, (archivo, _) in enumerate(piezas.PIEZAS):
     piezas.construir(i)
     piezas.guardar_pendiente()
     print("Guardado", archivo)
+for ruta in variantes_puerta.generar():     # puerta_tesoro.blend y puerta_jefe.blend, copiadas de puerta.blend
+    print("Guardado", os.path.basename(ruta))
 if "--muestra" in sys.argv:
     import kit_muestra as muestra
     muestra.armar()

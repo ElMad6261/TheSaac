@@ -322,7 +322,7 @@ def mat(nombre, tex=None, color=(0.5, 0.5, 0.5), rough=1.0, metal=0.0, emision=0
     if tex:
         ruta = os.path.join(DIR_TEX, tex + ".png")
         img = bpy.data.images.load(ruta, check_existing=True)
-        img.filepath = bpy.path.relpath(ruta)   # relativa al .blend; save_as la reubica
+        img.filepath = bpy.path.relpath(ruta, start=DIR_BLEND)   # relativa a assets/blend, donde se guardan las piezas
         uvn = nt.nodes.new('ShaderNodeUVMap'); uvn.location = (-650, 0); uvn.uv_map = "UVMap"
         tx = nt.nodes.new('ShaderNodeTexImage'); tx.location = (-400, 0)
         tx.image = img

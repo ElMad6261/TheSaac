@@ -66,7 +66,7 @@ def abrir_trampilla(t):
     t["Trampilla_Tapa_I"].rotation_euler.y += math.radians(-110)
     t["Trampilla_Tapa_D"].rotation_euler.y += math.radians(110)
 
-PUERTA = ["Puerta_Marco", "Puerta_Hoja", "Puerta_Cerrojo"]
+PUERTA = ["Puerta_Marco", "Puerta_Hoja"]
 TRAMPILLA = ["Trampilla", "Trampilla_Hueco", "Trampilla_Tapa_I", "Trampilla_Tapa_D"]
 
 def sala():
@@ -83,13 +83,13 @@ def sala():
         poner(["Muro_Estandar"], (-5.5, y, 0), 90, c=s)
     for y in (-2, 2):
         poner(["Muro_Estandar"], (5.5, y, 0), -90, c=s)
-    poner(["Muro_Vano"], (0, 3.5, 0), c=s)                       # norte: puerta bloqueada
+    poner(["Muro_Vano"], (0, 3.5, 0), c=s)                       # norte: puerta cerrada
     poner(PUERTA, (0, 3.5, 0), c=s)
     poner(["Muro_Vano"], (0, -3.5, 0), 180, c=s)                  # sur: puerta abierta
-    d = poner(PUERTA[:2], (0, -3.5, 0), 180, c=s)
+    d = poner(PUERTA, (0, -3.5, 0), 180, c=s)
     d["Puerta_Hoja"].rotation_euler.z += math.radians(90)
     poner(["Muro_Vano"], (5.5, 0, 0), -90, c=s)                   # este: puerta cerrada
-    poner(PUERTA[:2], (5.5, 0, 0), -90, c=s)
+    poner(PUERTA, (5.5, 0, 0), -90, c=s)
     poner(["Antorcha"], (-2, 3.25, 1.35), c=s)
     poner(["Antorcha"], (2, 3.25, 1.35), c=s)
     poner(["Interruptor"], (-5.25, 0, 1.0), 90, c=s)

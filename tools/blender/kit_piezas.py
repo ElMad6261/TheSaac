@@ -141,19 +141,9 @@ def p_puerta():
                   uv={0: dict(tam=(48, 80), origen=(0, -0.05, 0), reglas={'X': (40, 0), 'Z': (40, 0, True)}),
                       None: dict(tam=(16, 16))})
     afinar(hoja, det)
-
-    bm = bmesh.new()                                          # origen en el centro de la barra
-    caja(bm, -0.62, 0.62, -0.025, 0.025, -0.05, 0.05, 0)       # barra que cruza el vano
-    caja(bm, -0.06, 0.06, -0.045, 0.005, -0.21, -0.07, 1)      # candado
-    i0 = len(bm.verts)
-    aro(bm, (0, -0.02, -0.06), 0.04, 0.008, seg=8, plano='XZ', mat=1)
-    det = range(i0, len(bm.verts))
-    cerrojo = objeto("Puerta_Cerrojo", bm, [hierro(), laton()], col, loc=(0, -0.095, 1.25),
-                     uv={None: dict(tam=(16, 16))})
-    afinar(cerrojo, det)
-    return [marco, hoja, cerrojo], [(col, "Puertas",
-            "Puerta completa: marco 1.5 x 2.5 x 0.5 m, hoja 1.2 x 2.3 x 0.1 m con origen en la bisagra "
-            "(gira +90 en Z de Blender / Y de Godot) y cerrojo con candado (visible = bloqueada).", ("puerta", "interactivo"))]
+    return [marco, hoja], [(col, "Puertas",
+            "Puerta completa: marco 1.5 x 2.5 x 0.5 m y hoja 1.2 x 2.3 x 0.1 m con origen en la bisagra "
+            "(gira +90 en Z de Blender / Y de Godot). Sin cerrojo: es una puerta comun.", ("puerta", "interactivo"))]
 
 # ------------------------------------------------------------------ ANTORCHA
 def p_antorcha():
