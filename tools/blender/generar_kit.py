@@ -20,7 +20,7 @@ import variantes_puerta
 
 kit.preparar()
 kit.generar_texturas()
-texturas_v2.generar()       # muros, pilar y puertas v2 (reemplazan a las v1; ya traen la linea negra de arriba)
+texturas_v2.generar()       # muros, pilar, piso y puertas v2 (reemplazan a las v1; ya traen la linea negra de arriba)
 for i, (archivo, _) in enumerate(piezas.PIEZAS):
     piezas.construir(i)
     piezas.guardar_pendiente()
