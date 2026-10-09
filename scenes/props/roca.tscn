@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/blend/rocas.blend" id="1_rocas"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_roca"]
+size = Vector3(0.9, 0.8, 0.95)
+
+[node name="Roca" type="StaticBody3D"]
+
+[node name="Modelo" parent="." instance=ExtResource("1_rocas")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
+
+[node name="Roca_01" parent="Modelo" index="0"]
+visible = false
+
+[node name="Roca_03" parent="Modelo" index="2"]
+visible = false
+
+[node name="Roca_04" parent="Modelo" index="3"]
+visible = false
+
+[node name="Colision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+shape = SubResource("BoxShape3D_roca")
+
+[editable path="Modelo"]

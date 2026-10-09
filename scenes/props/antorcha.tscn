@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/blend/antorcha.blend" id="1_antorcha"]
+
+[node name="Antorcha" type="Node3D" groups=["muros"]]
+
+[node name="Modelo" parent="." instance=ExtResource("1_antorcha")]
+
+[node name="Luz" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0.25)
+light_color = Color(1, 0.7, 0.42, 1)
+light_energy = 1.8
+shadow_enabled = true
+omni_range = 6.0

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/blend/pilar.blend" id="1_pilar"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pilar"]
+size = Vector3(1, 3, 1)
+
+[node name="Pilar" type="StaticBody3D" groups=["muros"]]
+
+[node name="Modelo" parent="." instance=ExtResource("1_pilar")]
+
+[node name="Colision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_pilar")

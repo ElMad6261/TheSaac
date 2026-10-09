@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/blend/piso_sala.blend" id="1_piso"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_piso"]
+size = Vector3(11, 0.2, 7)
+
+[node name="Piso" type="StaticBody3D"]
+
+[node name="Modelo" parent="." instance=ExtResource("1_piso")]
+
+[node name="Colision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+shape = SubResource("BoxShape3D_piso")

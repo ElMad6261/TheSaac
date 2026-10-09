@@ -1,6 +1,6 @@
 # Isaac 3D — Proyecto Integrador de Entornos 3D e Interacción
 
-> Recreación en primera persona de *The Binding of Isaac* (Basement 1 y 2) con Blender 5.1 y Godot 4.7.2 (.NET / C#).
+> Recreación en 2.5D de *The Binding of Isaac* (Basement 1 y 2): cámara fija desde arriba, como el juego original pero en 3D, con Blender 5.1 y Godot 4.7.2 (.NET / C#).
 > Documento vivo del equipo · creado el 27 de septiembre de 2026.
 
 ---
@@ -10,7 +10,7 @@
 | Campo | Valor |
 | --- | --- |
 | Materia | Proyecto Integrador de Creación de Entornos 3D e Interacción |
-| Idea | Explorar en primera persona los sótanos de *The Binding of Isaac*: salas modulares conectadas por puertas que se abren con interacción |
+| Idea | Explorar en vista 2.5D (cámara fija desde arriba, una sala por pantalla), controlando a Isaac, los sótanos de *The Binding of Isaac*: salas modulares conectadas por puertas que se abren con interacción |
 | Motor | Godot 4.7.2, edición .NET (C#), renderizador Forward+ — **reemplaza a Unity 6.3 URP del enunciado** |
 | Modelado | Blender 5.1 |
 | Seguimiento | Trello (un tablero, cinco listas) |
@@ -25,7 +25,7 @@
 | Modelado 3D e interoperabilidad Blender–motor | 30% | Escala 1:1, pivote en la bisagra, mallas limpias, Asset Browser y scripts de importación |
 | Texturizado y shaders PBR | 25% | UV sin distorsión, horneado de Normal Maps, shaders PBR funcionales |
 | Programación e interacción C# | 25% | Detección limpia (Trigger/Raycast), rotación fluida de la puerta sin colisiones erróneas, input correcto |
-| Diseño de entorno y presentación | 20% | Composición, iluminación, fluidez en primera persona, build sin errores |
+| Diseño de entorno y presentación | 20% | Composición, iluminación, fluidez del recorrido, build sin errores (el enunciado dice "en primera persona"; la cámara es libre y usamos vista 2.5D) |
 
 ---
 
@@ -72,10 +72,11 @@ Todo lo de Blender (modelado, Geometry Nodes, Asset Browser, UV, horneado) no ca
 | on_scene_load.py | Script de post-importación (EditorScenePostImport) + sufijos (-col, -noimp) | Los sufijos generan colisiones y excluyen objetos sin código |
 | Shader Graph | Visual Shader (ShaderMaterial) con parámetros de tiling, roughness y opacidad | Godot usa roughness (= 1 − smoothness) |
 | Texturas Non-Color | Mapas normales se marcan al asignarlos; AO/roughness/metal en un ORM lineal | Revisar el preset de importación |
-| Input System | Input Map (Project Settings): move, look, interact = E | Mismos nombres de acción en todo el código |
-| CharacterController | CharacterBody3D + cápsula + Camera3D | |
+| Input System | Input Map (Project Settings): move_* (WASD) e interact (E); el ratón no se usa | Mismos nombres de acción en todo el código |
+| CharacterController | CharacterBody3D + cápsula + modelo de Isaac; WASD según la pantalla | Isaac gira hacia donde camina |
+| Cámara | `RoomCamera.cs`: Camera3D fija desde arriba (60°) que se desliza de sala en sala con un Tween | Deja en "solo sombra" los muros del grupo `muros` que quedan entre ella y la sala |
 | Trigger Collider | Area3D con señales body_entered / body_exited | |
-| Raycast | RayCast3D hijo de la cámara | |
+| Raycast | RayCast3D hijo del modelo de Isaac, apuntando hacia adelante (o un Area3D delante de él) | En vista 2.5D la detección sale de Isaac, no de la cámara |
 | Quaternion.Slerp / Lerp | Quaternion.Slerp en C#, o un Tween | |
 | Puerta sin colisiones erróneas | Hoja como AnimatableBody3D | Empuja al jugador en vez de atravesarlo |
 | Directional / Point Lights | DirectionalLight3D / OmniLight3D | |
@@ -134,12 +135,13 @@ Agregar contenido = crear un `.tres`, no código nuevo.
 res://
   assets/        blend/, texturas/, audio/
   data/          floors/ (basement_1.tres, basement_2.tres), items/, enemies/, rooms/
-  scenes/        player/, rooms/, props/ (puerta, antorcha, interruptor), enemies/, items/, ui/
+  scenes/        player/, rooms/ (modulos/), props/ (antorcha, roca, pedestal, puerta, interruptor), enemies/, items/, ui/
   scripts/
     core/        GameEvents.cs, GameState.cs
+    player/      PlayerController.cs
     components/  HealthComponent.cs, Hitbox.cs, Hurtbox.cs
     interaction/ IInteractable.cs, Interactor.cs, DoorInteraction.cs
-    rooms/       Room.cs, FloorGenerator.cs
+    rooms/       Room.cs, RoomCamera.cs, FloorGenerator.cs
     data/        PlayerStats.cs, ItemData.cs, EnemyData.cs, RoomData.cs, FloorConfig.cs
   addons/        godot_mcp/ (ver sección 9)
 ```
@@ -149,10 +151,11 @@ res://
 ## 6. Salas y generación aleatoria
 
 ### 6.1 Reglas de las salas (obligatorias desde la semana 2)
-- Todas las salas tienen el **mismo tamaño exterior** (p. ej. 13 × 7 módulos de 1 m).
+- Todas las salas tienen el **mismo tamaño**: 11 × 7 m de eje a eje de muro (el piso del kit), muros de 0.5 m y 3 m de alto, pilares de 1 m en las esquinas. En el nivel van espalda con espalda, cada **12 m en X y 8 m en Z** (los pilares de salas vecinas se tocan). Plantilla: `scenes/rooms/sala_normal.tscn`; piezas con colisión en `scenes/rooms/modulos/` (muro, muro_vano, pilar, piso) y `scenes/props/` (antorcha, roca, pedestal).
+- **Vista 2.5D:** la cámara mira al norte (-Z) desde arriba, así que las salas no llevan techo visible (si se usa, en "solo sombra"). Muros, pilares, puertas y antorchas de las paredes van en el grupo `muros`.
 - Una **abertura de puerta centrada en cada pared**.
 - Cada sala es una **escena independiente** (`.tscn`).
-- Donde no hay sala vecina se coloca un muro sólido; donde hay, una puerta con `DoorInteraction.cs`.
+- En el centro de cada pared, `Room.cs` pone al arrancar un muro sólido (sin sala vecina) o un vano (`DoorNorth`, `DoorSouth`, `DoorEast`, `DoorWest` activos). Después el vano llevará la puerta con `DoorInteraction.cs`.
 
 ### 6.2 Algoritmo tipo Isaac (versión simplificada)
 1. Cuadrícula pequeña (p. ej. 9 × 8); sala inicial en el centro.
@@ -200,7 +203,7 @@ res://
 - [ ] Fijar medida del módulo y reglas de las salas (sección 6.1)
 - [ ] Definir capas de colisión y autoloads vacíos (sección 5)
 - [ ] Graybox de 5 a 7 salas con nodos CSG y croquis del mapa
-- [ ] CharacterBody3D con cámara, WASD y ratón desde el Input Map
+- [ ] CharacterBody3D con Isaac (WASD según la pantalla) y cámara 2.5D por sala (`RoomCamera.cs` + `Room.cs` + `GameEvents`)
 - [ ] Exportar el blocking a Blender como referencia
 - [ ] Instalar y probar el MCP de Godot (sección 9)
 
@@ -214,6 +217,7 @@ res://
 - [ ] Variante con RayCast3D y decisión final
 - [ ] `Room.cs` con estados y señal `RoomCleared`
 - [ ] Interruptor y antorcha que se enciende
+- [ ] Animaciones de Isaac en Blender (quieto y caminar) y su AnimationTree en Godot
 
 **Hito 25 oct — rebanada vertical:** una sala con módulos reales (sin textura) y la puerta abriéndose dentro de un build.
 
@@ -248,7 +252,7 @@ res://
 - [ ] Ensayo de la demo en el orden de la rúbrica: Blender → shaders → interacción → escena final
 
 ### Post-entrega (hasta Basement 2)
-- [ ] Lágrimas: escena de proyectil con `Hitbox`, dirección desde la cámara, stats de `PlayerStats`
+- [ ] Lágrimas: escena de proyectil con `Hitbox`, dirección con las flechas (como en Isaac), stats de `PlayerStats`
 - [ ] Enemigos básicos con `HealthComponent` y `EnemyData`; salas pasan a "en combate"
 - [ ] Ítems: pedestal (`IInteractable`) + `ItemData` con modificadores
 - [ ] Jefe de Basement 1

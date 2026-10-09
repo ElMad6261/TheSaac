@@ -1,0 +1,107 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/rooms/Room.cs" id="1_sala"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/modulos/muro.tscn" id="2_muro"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/modulos/muro_vano.tscn" id="3_vano"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/modulos/pilar.tscn" id="4_pilar"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/modulos/piso.tscn" id="5_piso"]
+[ext_resource type="PackedScene" path="res://scenes/props/antorcha.tscn" id="6_antorcha"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_zona"]
+size = Vector3(10.5, 3, 6.5)
+
+[node name="SalaNormal" type="Node3D"]
+script = ExtResource("1_sala")
+SolidWallScene = ExtResource("2_muro")
+DoorwayScene = ExtResource("3_vano")
+
+[node name="Zona" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="Forma" type="CollisionShape3D" parent="Zona"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_zona")
+
+[node name="Piso" parent="." instance=ExtResource("5_piso")]
+
+[node name="Muros" type="Node3D" parent="."]
+
+[node name="Norte_m4" parent="Muros" instance=ExtResource("2_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -3.5)
+
+[node name="Norte_m2" parent="Muros" instance=ExtResource("2_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -3.5)
+
+[node name="Norte_2" parent="Muros" instance=ExtResource("2_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -3.5)
+
+[node name="Norte_4" parent="Muros" instance=ExtResource("2_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -3.5)
+
+[node name="Sur_m4" parent="Muros" instance=ExtResource("2_muro")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -4, 0, 3.5)
+
+[node name="Sur_m2" parent="Muros" instance=ExtResource("2_muro")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -2, 0, 3.5)
+
+[node name="Sur_2" parent="Muros" instance=ExtResource("2_muro")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 2, 0, 3.5)
+
+[node name="Sur_4" parent="Muros" instance=ExtResource("2_muro")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 4, 0, 3.5)
+
+[node name="Este_m2" parent="Muros" instance=ExtResource("2_muro")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 5.5, 0, -2)
+
+[node name="Este_2" parent="Muros" instance=ExtResource("2_muro")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 5.5, 0, 2)
+
+[node name="Oeste_m2" parent="Muros" instance=ExtResource("2_muro")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.5, 0, -2)
+
+[node name="Oeste_2" parent="Muros" instance=ExtResource("2_muro")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.5, 0, 2)
+
+[node name="Pilares" type="Node3D" parent="."]
+
+[node name="Noreste" parent="Pilares" instance=ExtResource("4_pilar")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0, -3.5)
+
+[node name="Noroeste" parent="Pilares" instance=ExtResource("4_pilar")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0, -3.5)
+
+[node name="Sureste" parent="Pilares" instance=ExtResource("4_pilar")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0, 3.5)
+
+[node name="Suroeste" parent="Pilares" instance=ExtResource("4_pilar")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0, 3.5)
+
+[node name="Huecos" type="Node3D" parent="."]
+
+[node name="Norte" type="Node3D" parent="Huecos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.5)
+
+[node name="Sur" type="Node3D" parent="Huecos"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 3.5)
+
+[node name="Este" type="Node3D" parent="Huecos"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 5.5, 0, 0)
+
+[node name="Oeste" type="Node3D" parent="Huecos"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.5, 0, 0)
+
+[node name="Antorchas" type="Node3D" parent="."]
+
+[node name="Oeste" parent="Antorchas" instance=ExtResource("6_antorcha")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1.35, -3.25)
+
+[node name="Este" parent="Antorchas" instance=ExtResource("6_antorcha")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.35, -3.25)
+
+[node name="Luz_Relleno" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 0.5)
+light_color = Color(1, 0.85, 0.7, 1)
+light_energy = 0.5
+omni_range = 9.0

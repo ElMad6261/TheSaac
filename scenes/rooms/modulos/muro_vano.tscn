@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/blend/muro_vano.blend" id="1_vano"]
+[ext_resource type="Texture2D" path="res://assets/texturas/T_Piso_Sotano.png" id="2_piso"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lado"]
+size = Vector3(0.25, 3, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dintel"]
+size = Vector3(1.5, 0.5, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_umbral"]
+size = Vector3(1.5, 0.1, 0.75)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_umbral"]
+albedo_texture = ExtResource("2_piso")
+texture_filter = 0
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_umbral"]
+material = SubResource("StandardMaterial3D_umbral")
+size = Vector3(1.5, 0.1, 0.75)
+
+[node name="MuroVano" type="StaticBody3D" groups=["muros"]]
+
+[node name="Modelo" parent="." instance=ExtResource("1_vano")]
+
+[node name="Lado_Izquierdo" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.875, 1.5, 0)
+shape = SubResource("BoxShape3D_lado")
+
+[node name="Lado_Derecho" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.875, 1.5, 0)
+shape = SubResource("BoxShape3D_lado")
+
+[node name="Dintel" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.75, 0)
+shape = SubResource("BoxShape3D_dintel")
+
+[node name="Umbral" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, -0.375)
+mesh = SubResource("BoxMesh_umbral")
+
+[node name="Umbral_Colision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, -0.375)
+shape = SubResource("BoxShape3D_umbral")
