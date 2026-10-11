@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/player/PlayerController.cs" id="1_control"]
+[ext_resource type="PackedScene" path="res://assets/blend/isaac.blend" id="2_isaac"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cuerpo"]
+radius = 0.35
+height = 1.2
+
+[node name="Jugador" type="CharacterBody3D" groups=["jugador"]]
+collision_layer = 2
+script = ExtResource("1_control")
+
+[node name="Colision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+shape = SubResource("CapsuleShape3D_cuerpo")
+
+[node name="Modelo" type="Node3D" parent="."]
+
+[node name="Isaac" parent="Modelo" instance=ExtResource("2_isaac")]
