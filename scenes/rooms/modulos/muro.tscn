@@ -1,14 +1,25 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://cf6bygn2uan8u"]
 
-[ext_resource type="PackedScene" path="res://assets/blend/muro_estandar.blend" id="1_muro"]
+[ext_resource type="PackedScene" uid="uid://cdxnqx2fmvo61" path="res://assets/blend/muro_estandar.blend" id="1_muro"]
+[ext_resource type="PackedScene" uid="uid://bug8g88do25fc" path="res://assets/blend/cornisa.blend" id="2_4eyg3"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_muro"]
 size = Vector3(2, 3, 0.5)
 
-[node name="Muro" type="StaticBody3D" groups=["muros"]]
+[node name="Muro" type="StaticBody3D" unique_id=212225306 groups=["muros"]]
 
-[node name="Modelo" parent="." instance=ExtResource("1_muro")]
+[node name="Modelo" parent="." unique_id=367221537 instance=ExtResource("1_muro")]
 
-[node name="Colision" type="CollisionShape3D" parent="."]
+[node name="Colision" type="CollisionShape3D" parent="." unique_id=828493598]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 shape = SubResource("BoxShape3D_muro")
+
+[node name="cornisa" parent="." unique_id=1687152653 instance=ExtResource("2_4eyg3")]
+
+[node name="Cornisa_B" parent="cornisa" index="1" unique_id=1735145391]
+visible = false
+
+[node name="Cornisa_C" parent="cornisa" index="2" unique_id=1002655752]
+visible = false
+
+[editable path="cornisa"]

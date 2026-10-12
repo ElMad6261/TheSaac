@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://7iiiek8mjgw8"]
+
+[ext_resource type="PackedScene" uid="uid://dff6habfeh8k3" path="res://assets/blend/vasjia.blend" id="1_a4f13"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ap7xm"]
+height = 0.7
+radius = 0.38
+
+[node name="Vasija" type="StaticBody3D" unique_id=1211045746]
+
+[node name="Vasijas" parent="." unique_id=1171849082 instance=ExtResource("1_a4f13")]
+
+[node name="Vasija_A" parent="Vasijas" index="0" unique_id=449479844]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.009976268, 0, 0)
+
+[node name="Vasija_B" parent="Vasijas" index="1" unique_id=1221028455]
+visible = false
+
+[node name="Vasija_C" parent="Vasijas" index="2" unique_id=1411427321]
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1380149645]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3613, 0)
+shape = SubResource("CylinderShape3D_ap7xm")
+
+[editable path="Vasijas"]

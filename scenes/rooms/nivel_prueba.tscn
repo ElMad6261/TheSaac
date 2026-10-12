@@ -2,8 +2,10 @@
 
 [ext_resource type="PackedScene" path="res://scenes/rooms/sala_normal.tscn" id="1_sala"]
 [ext_resource type="PackedScene" path="res://scenes/player/jugador.tscn" id="2_jugador"]
-[ext_resource type="Script" path="res://scripts/rooms/RoomCamera.cs" id="3_camara"]
+[ext_resource type="Script" uid="uid://qosa7dgin227" path="res://scripts/rooms/RoomCamera.cs" id="3_camara"]
+[ext_resource type="PackedScene" uid="uid://7iiiek8mjgw8" path="res://scenes/props/vasija.tscn" id="4_b4qdh"]
 [ext_resource type="PackedScene" path="res://scenes/props/roca.tscn" id="4_roca"]
+[ext_resource type="PackedScene" uid="uid://q448ndrt4trn" path="res://scenes/rooms/modulos/muro_vano.tscn" id="5_5ojx0"]
 [ext_resource type="PackedScene" path="res://scenes/props/pedestal.tscn" id="5_pedestal"]
 
 [sub_resource type="Environment" id="Environment_sotano"]
@@ -15,46 +17,56 @@ ambient_light_energy = 0.5
 tonemap_mode = 2
 glow_enabled = true
 
-[node name="NivelPrueba" type="Node3D"]
+[node name="NivelPrueba" type="Node3D" unique_id=1435102732]
 
-[node name="Entorno" type="WorldEnvironment" parent="."]
+[node name="Entorno" type="WorldEnvironment" parent="." unique_id=1718692148]
 environment = SubResource("Environment_sotano")
 
-[node name="Luz_General" type="DirectionalLight3D" parent="."]
+[node name="Luz_General" type="DirectionalLight3D" parent="." unique_id=542589563]
 transform = Transform3D(0.9063, -0.3462, 0.2424, 0, 0.5736, 0.8192, -0.4226, -0.7424, 0.5199, 0, 10, 0)
 light_color = Color(1, 0.9, 0.8, 1)
 light_energy = 0.35
 shadow_enabled = true
 
-[node name="Camara" type="Camera3D" parent="."]
+[node name="Camara" type="Camera3D" parent="." unique_id=1738967473]
 transform = Transform3D(1, 0, 0, 0, 0.5, 0.8660254, 0, -0.8660254, 0.5, 0, 15.3224, 8.05)
 current = true
 fov = 32.0
 script = ExtResource("3_camara")
 
-[node name="SalaA" parent="." instance=ExtResource("1_sala")]
+[node name="SalaA" parent="." unique_id=1222927016 instance=ExtResource("1_sala")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0074834824, -0.013246298, 0.014233112)
 DoorNorth = true
 
-[node name="Roca1" parent="SalaA" instance=ExtResource("4_roca")]
+[node name="Roca1" parent="SalaA" unique_id=475499947 instance=ExtResource("4_roca")]
 transform = Transform3D(0.939693, 0, 0.34202, 0, 1, 0, -0.34202, 0, 0.939693, -3.6, 0, -1.6)
 
-[node name="Roca2" parent="SalaA" instance=ExtResource("4_roca")]
+[node name="Roca2" parent="SalaA" unique_id=1929841482 instance=ExtResource("4_roca")]
 transform = Transform3D(-0.766044, 0, 0.642788, 0, 1, 0, -0.642788, 0, -0.766044, 3.4, 0, 1.7)
 
-[node name="Roca3" parent="SalaA" instance=ExtResource("4_roca")]
+[node name="Roca3" parent="SalaA" unique_id=1817709186 instance=ExtResource("4_roca")]
 transform = Transform3D(0.34202, 0, 0.939693, 0, 1, 0, -0.939693, 0, 0.34202, -2.6, 0, 1.9)
 
-[node name="SalaB" parent="." instance=ExtResource("1_sala")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 0, -8)
+[node name="Vasija" parent="SalaA" unique_id=1211045746 instance=ExtResource("4_b4qdh")]
+transform = Transform3D(0.34202, 0, 0.939693, 0, 1, 0, -0.939693, 0, 0.34202, -1.2182379, 0, -2.7804644)
+
+[node name="SalaB" parent="." unique_id=138713856 instance=ExtResource("1_sala")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8)
 DoorSouth = true
 
-[node name="Pedestal" parent="SalaB" instance=ExtResource("5_pedestal")]
+[node name="Pedestal" parent="SalaB" unique_id=47267406 instance=ExtResource("5_pedestal")]
 
-[node name="Roca1" parent="SalaB" instance=ExtResource("4_roca")]
+[node name="Roca1" parent="SalaB" unique_id=863755141 instance=ExtResource("4_roca")]
 transform = Transform3D(-0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, -0.866025, 3.7, 0, -1.9)
 
-[node name="Roca2" parent="SalaB" instance=ExtResource("4_roca")]
+[node name="Roca2" parent="SalaB" unique_id=1778647863 instance=ExtResource("4_roca")]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -3.4, 0, -1.7)
 
-[node name="Jugador" parent="." instance=ExtResource("2_jugador")]
+[node name="MuroVano" parent="SalaB" unique_id=667960258 instance=ExtResource("5_5ojx0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0029637814, 11.497815)
+
+[node name="MuroVano" parent="SalaB/MuroVano" unique_id=1086463181 instance=ExtResource("5_5ojx0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.019292712, -6.9838576)
+
+[node name="Jugador" parent="." unique_id=958481965 instance=ExtResource("2_jugador")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 1)
