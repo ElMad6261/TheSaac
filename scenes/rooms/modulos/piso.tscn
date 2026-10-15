@@ -1,14 +1,32 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://ddx0va2diqq36"]
 
-[ext_resource type="PackedScene" path="res://assets/blend/piso_sala.blend" id="1_piso"]
+[ext_resource type="PackedScene" uid="uid://c4m8lrpl4q467" path="res://assets/blend/piso_sala.blend" id="1_piso"]
+[ext_resource type="PackedScene" uid="uid://dc2jdkimcjf3i" path="res://assets/blend/escombros.blend" id="2_f8akh"]
+[ext_resource type="PackedScene" uid="uid://be1u4k6s6qud7" path="res://assets/blend/pua.blend" id="3_ycq5x"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_piso"]
 size = Vector3(11, 0.2, 7)
 
-[node name="Piso" type="StaticBody3D"]
+[node name="Piso" type="StaticBody3D" unique_id=671244365]
 
-[node name="Modelo" parent="." instance=ExtResource("1_piso")]
+[node name="Modelo" parent="." unique_id=1849122338 instance=ExtResource("1_piso")]
 
-[node name="Colision" type="CollisionShape3D" parent="."]
+[node name="Colision" type="CollisionShape3D" parent="." unique_id=1829909630]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 shape = SubResource("BoxShape3D_piso")
+
+[node name="escombros" parent="." unique_id=74324429 instance=ExtResource("2_f8akh")]
+
+[node name="Spikes" parent="." unique_id=1032576789 instance=ExtResource("3_ycq5x")]
+
+[node name="Pua_A" parent="Spikes" index="0" unique_id=1602421098]
+visible = false
+
+[node name="Pua_B" parent="Spikes" index="1" unique_id=1194412551]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.140304, 0, -2.828712)
+
+[node name="Pua_C" parent="Spikes" index="2" unique_id=173551316]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0, -2.6259618)
+visible = false
+
+[editable path="Spikes"]

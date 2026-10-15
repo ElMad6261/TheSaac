@@ -31,7 +31,7 @@ project/assembly_name="TheSaac"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_mcp/plugin.cfg")
+enabled=PackedStringArray()
 
 [godot_mcp]
 
