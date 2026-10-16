@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="Mat_prop"]
+albedo_color = Color(0.4, 0.38, 0.36, 1)
+
+[node name="ColumnaGraybox" type="CSGBox3D"]
+use_collision = true
+size = Vector3(1, 1.5, 1)
+material = SubResource("Mat_prop")

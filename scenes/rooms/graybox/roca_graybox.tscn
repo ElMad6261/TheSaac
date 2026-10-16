@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="Mat_prop"]
+albedo_color = Color(0.45, 0.43, 0.4, 1)
+
+[node name="RocaGraybox" type="CSGBox3D"]
+use_collision = true
+size = Vector3(0.9, 0.7, 0.8)
+material = SubResource("Mat_prop")

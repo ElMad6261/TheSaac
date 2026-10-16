@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/rooms/graybox/sala_graybox.tscn" id="1_base"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_piso"]
+albedo_color = Color(0.2, 0.36, 0.22, 1)
+
+[node name="SalaInicio" instance=ExtResource("1_base")]
+DoorEast = true
+DoorSouth = true
+DoorWest = true
+
+[node name="Piso" parent="." index="1"]
+material = SubResource("Mat_piso")
+
+[node name="Etiqueta" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.02, -1.8)
+pixel_size = 0.012
+shaded = true
+modulate = Color(1, 1, 1, 0.85)
+text = "INICIO"
+font_size = 96
+

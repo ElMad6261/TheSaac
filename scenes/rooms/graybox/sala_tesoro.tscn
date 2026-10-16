@@ -1,0 +1,26 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/rooms/graybox/sala_graybox.tscn" id="1_base"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/graybox/pedestal_graybox.tscn" id="2_pedestal"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_piso"]
+albedo_color = Color(0.55, 0.42, 0.12, 1)
+
+[node name="SalaTesoro" instance=ExtResource("1_base")]
+DoorSouth = true
+
+[node name="Piso" parent="." index="1"]
+material = SubResource("Mat_piso")
+
+[node name="Etiqueta" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.02, -1.8)
+pixel_size = 0.012
+shaded = true
+modulate = Color(1, 1, 1, 0.85)
+text = "TESORO"
+font_size = 96
+
+[node name="Props" type="Node3D" parent="."]
+
+[node name="Pedestal1" parent="Props" instance=ExtResource("2_pedestal")]
+transform = Transform3D(1.0, 0, 0.0, 0, 1, 0, -0.0, 0, 1.0, 0, 0.4, -0.5)
