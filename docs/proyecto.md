@@ -72,8 +72,8 @@ Todo lo de Blender (modelado, Geometry Nodes, Asset Browser, UV, horneado) no ca
 | on_scene_load.py | Script de post-importación (EditorScenePostImport) + sufijos (-col, -noimp) | Los sufijos generan colisiones y excluyen objetos sin código |
 | Shader Graph | Visual Shader (ShaderMaterial) con parámetros de tiling, roughness y opacidad | Godot usa roughness (= 1 − smoothness) |
 | Texturas Non-Color | Mapas normales se marcan al asignarlos; AO/roughness/metal en un ORM lineal | Revisar el preset de importación |
-| Input System | Input Map (Project Settings): move_* (WASD) e interact (E); el ratón no se usa | Mismos nombres de acción en todo el código |
-| CharacterController | CharacterBody3D + cápsula + modelo de Isaac; WASD según la pantalla | Isaac gira hacia donde camina |
+| Input System | Input Map (Project Settings): move_* (WASD), look_* (flechas, cabeza de Isaac) e interact (E); el ratón no se usa | Mismos nombres de acción en todo el código |
+| CharacterController | CharacterBody3D + cápsula + modelo de Isaac; WASD mueve el cuerpo según la pantalla y las flechas giran la cabeza | Isaac gira hacia donde camina; la cabeza gira aparte del cuerpo |
 | Cámara | `RoomCamera.cs`: Camera3D fija desde arriba (60°) que se desliza de sala en sala con un Tween | Deja en "solo sombra" los muros del grupo `muros` que quedan entre ella y la sala |
 | Trigger Collider | Area3D con señales body_entered / body_exited | |
 | Raycast | RayCast3D hijo del modelo de Isaac, apuntando hacia adelante (o un Area3D delante de él) | En vista 2.5D la detección sale de Isaac, no de la cámara |
@@ -202,7 +202,7 @@ res://
 ### Semana 2 · 5 – 11 oct · Fase 1: graybox y jugador
 - [ ] Fijar medida del módulo y reglas de las salas (sección 6.1)
 - [ ] Definir capas de colisión y autoloads vacíos (sección 5)
-- [ ] Graybox de 5 a 7 salas con nodos CSG y croquis del mapa
+- [x] Graybox de 5 a 7 salas con nodos CSG y croquis del mapa (7 salas en `scenes/rooms/nivel_graybox.tscn`; ver `docs/mapa_graybox.md`)
 - [ ] CharacterBody3D con Isaac (WASD según la pantalla) y cámara 2.5D por sala (`RoomCamera.cs` + `Room.cs` + `GameEvents`)
 - [ ] Exportar el blocking a Blender como referencia
 - [ ] Instalar y probar el MCP de Godot (sección 9)
@@ -217,7 +217,7 @@ res://
 - [ ] Variante con RayCast3D y decisión final
 - [ ] `Room.cs` con estados y señal `RoomCleared`
 - [ ] Interruptor y antorcha que se enciende
-- [ ] Animaciones de Isaac en Blender (quieto y caminar) y su AnimationTree en Godot
+- [x] Animaciones de Isaac en Blender (quieto y caminar), generadas con `tools/blender/animar_isaac.py`, y su reproducción en Godot con un AnimationPlayer en `PlayerController.cs`
 
 **Hito 25 oct — rebanada vertical:** una sala con módulos reales (sin textura) y la puerta abriéndose dentro de un build.
 
