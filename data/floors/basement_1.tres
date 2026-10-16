@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="FloorConfig" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/FloorConfig.cs" id="1_config"]
+[ext_resource type="Script" path="res://scripts/data/RoomData.cs" id="2_roomdata"]
+[ext_resource type="Resource" path="res://data/rooms/inicio.tres" id="3_inicio"]
+[ext_resource type="Resource" path="res://data/rooms/tesoro.tres" id="4_tesoro"]
+[ext_resource type="Resource" path="res://data/rooms/jefe.tres" id="5_jefe"]
+[ext_resource type="Resource" path="res://data/rooms/normal_cruce.tres" id="6_normal_cruce"]
+[ext_resource type="Resource" path="res://data/rooms/normal_galeria.tres" id="7_normal_galeria"]
+[ext_resource type="Resource" path="res://data/rooms/normal_sotano.tres" id="8_normal_sotano"]
+[ext_resource type="Resource" path="res://data/rooms/normal_despensa.tres" id="9_normal_despensa"]
+
+[resource]
+script = ExtResource("1_config")
+FloorName = "Basement 1"
+RoomCount = 7
+GridSize = Vector2i(9, 8)
+SpawnChance = 0.5
+CellSize = Vector2(12, 8)
+Rooms = Array[ExtResource("2_roomdata")]([ExtResource("3_inicio"), ExtResource("4_tesoro"), ExtResource("5_jefe"), ExtResource("6_normal_cruce"), ExtResource("7_normal_galeria"), ExtResource("8_normal_sotano"), ExtResource("9_normal_despensa")])
