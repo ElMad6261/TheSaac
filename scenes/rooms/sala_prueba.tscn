@@ -1,0 +1,103 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/rooms/Room.cs" id="1_sala"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_zona"]
+size = Vector3(10.5, 3, 6.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pared"]
+albedo_color = Color(0.41, 0.26, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_piso"]
+albedo_color = Color(0.24, 0.15, 0.12, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_roca"]
+albedo_color = Color(0.45, 0.43, 0.4, 1)
+
+[node name="SalaPrueba" type="Node3D"]
+script = ExtResource("1_sala")
+
+[node name="Zona" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="Forma" type="CollisionShape3D" parent="Zona"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_zona")
+
+[node name="Piso" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+use_collision = true
+size = Vector3(11.5, 0.2, 7.5)
+material = SubResource("StandardMaterial3D_piso")
+
+[node name="Muro_Norte" type="CSGBox3D" parent="." groups=["muros"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -3.5)
+use_collision = true
+size = Vector3(11.5, 3, 0.5)
+material = SubResource("StandardMaterial3D_pared")
+
+[node name="Hueco" type="CSGBox3D" parent="Muro_Norte"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
+operation = 2
+size = Vector3(1.2, 2.4, 1)
+
+[node name="Muro_Sur" type="CSGBox3D" parent="." groups=["muros"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 3.5)
+use_collision = true
+size = Vector3(11.5, 3, 0.5)
+material = SubResource("StandardMaterial3D_pared")
+
+[node name="Hueco" type="CSGBox3D" parent="Muro_Sur"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
+operation = 2
+size = Vector3(1.2, 2.4, 1)
+
+[node name="Muro_Oeste" type="CSGBox3D" parent="." groups=["muros"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 1.5, 0)
+use_collision = true
+size = Vector3(0.5, 3, 6.5)
+material = SubResource("StandardMaterial3D_pared")
+
+[node name="Hueco" type="CSGBox3D" parent="Muro_Oeste"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
+operation = 2
+size = Vector3(1, 2.4, 1.2)
+
+[node name="Muro_Este" type="CSGBox3D" parent="." groups=["muros"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 1.5, 0)
+use_collision = true
+size = Vector3(0.5, 3, 6.5)
+material = SubResource("StandardMaterial3D_pared")
+
+[node name="Hueco" type="CSGBox3D" parent="Muro_Este"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
+operation = 2
+size = Vector3(1, 2.4, 1.2)
+
+[node name="Roca" type="CSGBox3D" parent="."]
+transform = Transform3D(0.9397, 0, 0.342, 0, 1, 0, -0.342, 0, 0.9397, 2.8, 0.35, 1.2)
+use_collision = true
+size = Vector3(0.9, 0.7, 0.8)
+material = SubResource("StandardMaterial3D_roca")
+
+[node name="Luz_Antorcha_Oeste" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1.9, -2.9)
+light_color = Color(1, 0.72, 0.45, 1)
+light_energy = 1.6
+shadow_enabled = true
+omni_range = 6.0
+
+[node name="Luz_Antorcha_Este" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.9, -2.9)
+light_color = Color(1, 0.72, 0.45, 1)
+light_energy = 1.6
+shadow_enabled = true
+omni_range = 6.0
+
+[node name="Luz_Relleno" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 0.5)
+light_color = Color(1, 0.85, 0.7, 1)
+light_energy = 0.6
+omni_range = 9.0
