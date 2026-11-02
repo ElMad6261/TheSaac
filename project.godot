@@ -19,7 +19,6 @@ config/icon="res://icon.svg"
 
 GameEvents="*res://scripts/core/GameEvents.cs"
 GameState="*res://scripts/core/GameState.cs"
-MCPGameBridge="res://addons/godot_mcp/game_bridge/mcp_game_bridge.gd"
 
 [display]
 
@@ -33,13 +32,6 @@ project/assembly_name="TheSaac"
 [editor_plugins]
 
 enabled=PackedStringArray()
-
-[godot_mcp]
-
-bind_mode=0
-custom_bind_ip=""
-port_override_enabled=false
-port_override=6550
 
 [input]
 
