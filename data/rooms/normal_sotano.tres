@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/RoomData.cs" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/graybox/sala_sotano.tscn" id="2_escena"]
+
+[resource]
+script = ExtResource("1_script")
+Type = 0
+Scene = ExtResource("2_escena")

@@ -1,6 +1,6 @@
 # TheSaac — Isaac 3D
 
-Recreación en primera persona de los sótanos de *The Binding of Isaac* (Basement 1 y 2), hecha con **Blender 5.1** y **Godot 4.7.2 .NET (C#)**.
+Recreación en 2.5D (cámara fija desde arriba, como el juego original pero en 3D) de los sótanos de *The Binding of Isaac* (Basement 1 y 2), hecha con **Blender 5.1** y **Godot 4.7.2 .NET (C#)**.
 
 Proyecto Integrador de Creación de Entornos 3D e Interacción · Universidad Tecnológica de Panamá.
 
@@ -47,9 +47,10 @@ res://
   scenes/        player/, rooms/, props/, enemies/, items/, ui/
   scripts/
     core/        GameEvents.cs, GameState.cs          ← autoloads
+    player/      PlayerController.cs
     components/  HealthComponent.cs, Hitbox.cs, Hurtbox.cs
     interaction/ IInteractable.cs, Interactor.cs, DoorInteraction.cs
-    rooms/       Room.cs, FloorGenerator.cs
+    rooms/       Room.cs, RoomCamera.cs, FloorGenerator.cs
     data/        PlayerStats.cs, ItemData.cs, EnemyData.cs, RoomData.cs, FloorConfig.cs
   docs/          proyecto.md, LDD
 ```

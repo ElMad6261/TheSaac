@@ -1,0 +1,22 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="Mat_muro"]
+albedo_color = Color(0.55, 0.52, 0.5, 1)
+
+[node name="VanoGraybox" type="Node3D" groups=["muros"]]
+
+[node name="Caja" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+use_collision = true
+size = Vector3(2, 3, 0.5)
+material = SubResource("Mat_muro")
+
+[node name="Abertura" type="CSGBox3D" parent="Caja"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+operation = 2
+size = Vector3(1.5, 2.5, 1)
+
+[node name="Umbral" type="CSGBox3D" parent="Caja"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.6, -0.375)
+size = Vector3(1.5, 0.2, 0.75)
+material = SubResource("Mat_muro")

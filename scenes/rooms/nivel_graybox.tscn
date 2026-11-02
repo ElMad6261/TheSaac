@@ -1,0 +1,60 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player/jugador.tscn" id="1_jugador"]
+[ext_resource type="Script" path="res://scripts/rooms/RoomCamera.cs" id="2_camara"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/graybox/sala_inicio.tscn" id="3_inicio"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/graybox/sala_cruce.tscn" id="4_cruce"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/graybox/sala_galeria.tscn" id="5_galeria"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/graybox/sala_jefe.tscn" id="6_jefe"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/graybox/sala_tesoro.tscn" id="7_tesoro"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/graybox/sala_sotano.tscn" id="8_sotano"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/graybox/sala_despensa.tscn" id="9_despensa"]
+
+[sub_resource type="Environment" id="Environment_sotano"]
+background_mode = 1
+background_color = Color(0.02, 0.016, 0.014, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.55, 0.45, 0.4, 1)
+ambient_light_energy = 0.5
+tonemap_mode = 2
+
+[node name="NivelGraybox" type="Node3D"]
+
+[node name="Entorno" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_sotano")
+
+[node name="Luz_General" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.9063, -0.3462, 0.2424, 0, 0.5736, 0.8192, -0.4226, -0.7424, 0.5199, 0, 10, 0)
+light_color = Color(1, 0.9, 0.8, 1)
+light_energy = 0.35
+shadow_enabled = true
+
+[node name="Camara" type="Camera3D" parent="."]
+current = true
+fov = 32.0
+script = ExtResource("2_camara")
+
+[node name="Salas" type="Node3D" parent="."]
+
+[node name="Inicio" parent="Salas" instance=ExtResource("3_inicio")]
+
+[node name="Cruce" parent="Salas" instance=ExtResource("4_cruce")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 0)
+
+[node name="Galeria" parent="Salas" instance=ExtResource("5_galeria")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, 0)
+
+[node name="Jefe" parent="Salas" instance=ExtResource("6_jefe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0, 0)
+
+[node name="Tesoro" parent="Salas" instance=ExtResource("7_tesoro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, -8)
+
+[node name="Sotano" parent="Salas" instance=ExtResource("8_sotano")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8)
+
+[node name="Despensa" parent="Salas" instance=ExtResource("9_despensa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 0)
+
+[node name="Jugador" parent="." instance=ExtResource("1_jugador")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 1)
