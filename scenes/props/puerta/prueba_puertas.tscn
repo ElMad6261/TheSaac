@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://jd1kkbswhmgf"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/puerta/puerta.tscn" id="1_puerta"]
+[ext_resource type="PackedScene" path="res://scenes/props/puerta/puerta_tesoro.tscn" id="2_tesoro"]
+[ext_resource type="PackedScene" path="res://scenes/props/puerta/puerta_jefe.tscn" id="3_jefe"]
+
+[sub_resource type="Environment" id="Environment_prueba"]
+background_mode = 1
+background_color = Color(0.12, 0.1, 0.1, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.75, 0.72, 0.8, 1)
+ambient_light_energy = 0.7
+
+[sub_resource type="BoxMesh" id="BoxMesh_piso"]
+size = Vector3(14, 0.1, 6)
+
+[node name="PruebaPuertas" type="Node3D" unique_id=616593904]
+
+[node name="Entorno" type="WorldEnvironment" parent="." unique_id=1499652045]
+environment = SubResource("Environment_prueba")
+
+[node name="Luz" type="DirectionalLight3D" parent="." unique_id=910988881]
+transform = Transform3D(1, 0, 0, 0, 0.6428, 0.766, 0, -0.766, 0.6428, 0, 5, 0)
+shadow_enabled = true
+
+[node name="Camara" type="Camera3D" parent="." unique_id=1312902347]
+transform = Transform3D(1, 0, 0, 0, 0.9613, 0.2756, 0, -0.2756, 0.9613, 0, 3.2, 7)
+
+[node name="Piso" type="MeshInstance3D" parent="." unique_id=563935309]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, -1)
+mesh = SubResource("BoxMesh_piso")
+
+[node name="Puerta" parent="." unique_id=44200601 instance=ExtResource("1_puerta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
+
+[node name="PuertaTesoro" parent="." unique_id=461068428 instance=ExtResource("2_tesoro")]
+
+[node name="PuertaJefe" parent="." unique_id=1119189491 instance=ExtResource("3_jefe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=726808674]

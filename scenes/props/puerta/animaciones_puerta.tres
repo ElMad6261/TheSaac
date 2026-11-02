@@ -1,0 +1,121 @@
+[gd_resource type="AnimationLibrary" format=3 uid="uid://btd21mg3cnly4"]
+
+[sub_resource type="Animation" id="Animation_Abrir"]
+resource_name = "Abrir"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hoja:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.55, 0.7),
+"transitions": PackedFloat32Array(-2, -2, 0.5, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -0.06981, 0), Vector3(0, 1.64061, 0), Vector3(0, 1.5708, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Modelo/Puerta_Hoja:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.55, 0.7),
+"transitions": PackedFloat32Array(-2, -2, 0.5, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -0.06981, 0), Vector3(0, 1.64061, 0), Vector3(0, 1.5708, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_Bloqueada"]
+resource_name = "Bloqueada"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hoja:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.12, 0.19, 0.26, 0.33, 0.4),
+"transitions": PackedFloat32Array(-2, -2, -2, -2, -2, -2, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.04363, 0), Vector3(0, -0.03142, 0), Vector3(0, 0.02094, 0), Vector3(0, -0.01222, 0), Vector3(0, 0.00524, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Modelo/Puerta_Hoja:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.12, 0.19, 0.26, 0.33, 0.4),
+"transitions": PackedFloat32Array(-2, -2, -2, -2, -2, -2, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.04363, 0), Vector3(0, -0.03142, 0), Vector3(0, 0.02094, 0), Vector3(0, -0.01222, 0), Vector3(0, 0.00524, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_Cerrar"]
+resource_name = "Cerrar"
+length = 0.54
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hoja:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.38, 0.46, 0.54),
+"transitions": PackedFloat32Array(2, 0.5, 0.5, 1),
+"update": 0,
+"values": [Vector3(0, 1.5708, 0), Vector3(0, -0.02618, 0), Vector3(0, 0.01745, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Modelo/Puerta_Hoja:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.38, 0.46, 0.54),
+"transitions": PackedFloat32Array(2, 0.5, 0.5, 1),
+"update": 0,
+"values": [Vector3(0, 1.5708, 0), Vector3(0, -0.02618, 0), Vector3(0, 0.01745, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_RESET"]
+resource_name = "RESET"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hoja:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Modelo/Puerta_Hoja:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[resource]
+_data = {
+&"Abrir": SubResource("Animation_Abrir"),
+&"Bloqueada": SubResource("Animation_Bloqueada"),
+&"Cerrar": SubResource("Animation_Cerrar"),
+&"RESET": SubResource("Animation_RESET")
+}
