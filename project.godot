@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="TheSaac"
-run/main_scene="res://scenes/rooms/nivel_prueba.tscn"
+run/main_scene="uid://b23ig80thg75s"
 config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
