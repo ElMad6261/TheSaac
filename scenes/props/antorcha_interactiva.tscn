@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/props/antorcha.tscn" id="1_antorcha"]
+[ext_resource type="Script" path="res://scripts/interaction/TorchInteraction.cs" id="2_logica"]
+
+[node name="AntorchaInteractiva" instance=ExtResource("1_antorcha")]
+script = ExtResource("2_logica")

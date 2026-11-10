@@ -229,8 +229,8 @@ res://
 - [ ] Look del sótano: paleta de cafés y grises, suciedad con mapa de detalle
 
 ### Semana 7 · 9 – 15 nov · Cierre de interacciones e inicio de integración
-- [ ] Hoja de la puerta como AnimatableBody3D; no atraviesa ni atrapa al jugador
-- [ ] Aviso en pantalla "E · Abrir"
+- [x] Hoja de la puerta como AnimatableBody3D; no atraviesa ni atrapa al jugador
+- [x] Aviso en pantalla "E · Abrir" (`Interactor` + `scenes/ui/aviso_interaccion.tscn`)
 - [ ] Un solo script de puerta parametrizado (ángulo, velocidad, bloqueada)
 - [ ] *(Deseable)* `FloorGenerator.cs` + `basement_1.tres`
 

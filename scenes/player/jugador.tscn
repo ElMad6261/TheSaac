@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://c6oyeli1cc3hx" path="res://scripts/player/PlayerController.cs" id="1_control"]
 [ext_resource type="PackedScene" uid="uid://bgkqsr25s0bxn" path="res://assets/blend/isaac.blend" id="2_isaac"]
+[ext_resource type="Script" path="res://scripts/interaction/Interactor.cs" id="3_interactor"]
+[ext_resource type="PackedScene" path="res://scenes/ui/aviso_interaccion.tscn" id="4_aviso"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cuerpo"]
 radius = 0.35
@@ -18,3 +20,8 @@ shape = SubResource("CapsuleShape3D_cuerpo")
 [node name="Modelo" type="Node3D" parent="." unique_id=1365501722]
 
 [node name="Isaac" parent="Modelo" unique_id=1603826718 instance=ExtResource("2_isaac")]
+
+[node name="Interactor" type="Node" parent="."]
+script = ExtResource("3_interactor")
+
+[node name="Aviso" parent="Interactor" instance=ExtResource("4_aviso")]

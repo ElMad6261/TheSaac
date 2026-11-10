@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room.cs" id="1_sala"]
 [ext_resource type="PackedScene" path="res://scenes/rooms/modulos/muro.tscn" id="2_muro"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://scenes/rooms/modulos/pilar.tscn" id="4_pilar"]
 [ext_resource type="PackedScene" path="res://scenes/rooms/modulos/piso.tscn" id="5_piso"]
 [ext_resource type="PackedScene" path="res://scenes/props/antorcha.tscn" id="6_antorcha"]
+[ext_resource type="PackedScene" path="res://scenes/props/puerta/puerta.tscn" id="7_puerta"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_zona"]
 size = Vector3(10.5, 3, 6.5)
@@ -14,6 +15,7 @@ size = Vector3(10.5, 3, 6.5)
 script = ExtResource("1_sala")
 SolidWallScene = ExtResource("2_muro")
 DoorwayScene = ExtResource("3_vano")
+DoorScene = ExtResource("7_puerta")
 
 [node name="Zona" type="Area3D" parent="."]
 collision_layer = 0
