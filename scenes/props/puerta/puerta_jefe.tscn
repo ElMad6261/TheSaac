@@ -1,6 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="PackedScene" path="res://assets/blend/puerta_jefe.blend" id="1_modelo"]
+[ext_resource type="Script" path="res://scripts/interaction/DoorInteraction.cs" id="3_logica"]
 [ext_resource type="AnimationLibrary" path="res://scenes/props/puerta/animaciones_puerta.tres" id="2_anim"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hoja"]
@@ -13,6 +14,7 @@ size = Vector3(0.15, 2.3, 0.5)
 size = Vector3(1.5, 0.2, 0.5)
 
 [node name="Puerta" type="Node3D" groups=["muros"]]
+script = ExtResource("3_logica")
 
 [node name="Modelo" parent="." instance=ExtResource("1_modelo")]
 
