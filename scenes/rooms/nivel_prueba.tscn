@@ -7,7 +7,8 @@
 [ext_resource type="PackedScene" path="res://scenes/props/roca.tscn" id="4_roca"]
 [ext_resource type="PackedScene" uid="uid://q448ndrt4trn" path="res://scenes/rooms/modulos/muro_vano.tscn" id="5_5ojx0"]
 [ext_resource type="PackedScene" path="res://scenes/props/pedestal.tscn" id="5_pedestal"]
-[ext_resource type="PackedScene" path="res://scenes/props/antorcha_interactiva.tscn" id="6_antorcha"]
+[ext_resource type="PackedScene" path="res://scenes/props/antorcha_pie.tscn" id="6_antorcha_pie"]
+[ext_resource type="PackedScene" path="res://scenes/props/placa_presion.tscn" id="7_placa"]
 
 [sub_resource type="Environment" id="Environment_sotano"]
 background_mode = 1
@@ -51,8 +52,12 @@ transform = Transform3D(0.34202, 0, 0.939693, 0, 1, 0, -0.939693, 0, 0.34202, -2
 [node name="Vasija" parent="SalaA" unique_id=1211045746 instance=ExtResource("4_b4qdh")]
 transform = Transform3D(0.34202, 0, 0.939693, 0, 1, 0, -0.939693, 0, 0.34202, -1.2182379, 0, -2.7804644)
 
-[node name="AntorchaInteractiva" parent="SalaA" instance=ExtResource("6_antorcha")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.25, 1.35, 0)
+[node name="AntorchaPie" parent="SalaA" instance=ExtResource("6_antorcha_pie")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6, 0, 0.2)
+
+[node name="PlacaPresion" parent="SalaA" instance=ExtResource("7_placa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 0, 0.4)
+Objetivos = Array[NodePath]([NodePath("../AntorchaPie")])
 
 [node name="SalaB" parent="." unique_id=138713856 instance=ExtResource("1_sala")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8)

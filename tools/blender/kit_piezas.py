@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-kit_piezas.py - Las 13 piezas del kit de TheSaac (matriz del taller de preproduccion).
+kit_piezas.py - Las piezas del kit de TheSaac (matriz del taller de preproduccion).
 Usa kit_isaac.py (texturas, materiales, contorno). Convenciones:
   * Escala 1:1, metros. Frente hacia -Y. Origen abajo al centro, salvo piezas que giran
     (hoja de puerta, palanca, tapas de trampilla): origen en la bisagra.
@@ -196,6 +196,68 @@ def p_interruptor():
             "Interruptor de palanca 0.3 x 0.5 x 0.2 m. La palanca gira en X: 0 = arriba (apagado), +110 = abajo (activado).",
             ("interruptor", "palanca", "interactivo"))]
 
+# ------------------------------------------------------------------ ANTORCHA DE PIE
+def p_antorcha_pie():
+    """Antorcha de pie para el centro de la sala: se lee desde la camara de arriba (la de muro queda chica)."""
+    col = kit.coleccion("AntorchaPie")
+    bm = bmesh.new()                                          # origen: abajo al centro, en el piso
+    torre(bm, [(0.2, 0.2, 0.0), (0.2, 0.2, 0.08), (0.13, 0.13, 0.14)], 0)     # base de piedra
+    caja(bm, -0.04, 0.04, -0.04, 0.04, 0.14, 0.9, 1)                          # poste
+    caja(bm, -0.065, 0.065, -0.065, 0.065, 0.16, 0.22, 1)                     # collar de abajo
+    caja(bm, -0.065, 0.065, -0.065, 0.065, 0.5, 0.56, 1)                      # collar del medio
+    torre(bm, [(0.06, 0.06, 0.88), (0.2, 0.2, 1.0), (0.2, 0.2, 1.06)], 1)     # cuenco
+    caja(bm, -0.16, 0.16, -0.16, 0.16, 1.06, 1.09, 2)                         # brasas (brea)
+    i0 = len(bm.verts)
+    for sx in (-1, 1):                                        # cuatro puntas en las esquinas del cuenco
+        for sy in (-1, 1):
+            x0, x1 = sorted((sx * 0.165, sx * 0.2))
+            y0, y1 = sorted((sy * 0.165, sy * 0.2))
+            caja(bm, x0, x1, y0, y1, 1.06, 1.17, 1)
+    ant = objeto("AntorchaPie", bm, [piedra_c(), hierro(), brea()], col,
+                 uv={0: dict(tam=(32, 32), origen=(-0.2, -0.2, 0)), 1: dict(tam=(16, 16)), 2: dict(tam=(8, 8))})
+    afinar(ant, range(i0, i0 + 32), factor=0.5)
+    bm = bmesh.new()
+    kit.llama(bm)
+    bmesh.ops.scale(bm, vec=(2.8, 2.8, 3.0), verts=bm.verts)  # 28 x 36 cm
+    llama = objeto("AntorchaPie_Llama", bm, [M('M_Fuego', 'T_Fuego', emision=4.0)], col,
+                   uv={0: dict(tam=(8, 16), origen=(-0.14, -0.14, 0))}, con_contorno=False)
+    hijo(llama, ant, (0, 0, 1.07))
+    luz = bpy.data.objects.new("AntorchaPie_PuntoLuz", None)
+    luz.empty_display_type = 'SPHERE'
+    luz.empty_display_size = 0.05
+    col.objects.link(luz)
+    hijo(luz, ant, (0, 0, 1.3))
+    return [ant, llama, luz], [(col, "Detalles",
+            "Antorcha de pie 0.4 x 0.4 x 1.17 m (con llama, 1.43 m). Origen abajo al centro. AntorchaPie_Llama se "
+            "oculta cuando esta apagada; AntorchaPie_PuntoLuz marca donde va el OmniLight3D.",
+            ("antorcha", "luz", "interactivo"))]
+
+# ------------------------------------------------------------------ PLACA DE PRESION
+def p_placa_presion():
+    """Placa de presion en el piso: se activa cuando Isaac pasa encima (el boton se hunde 3.5 cm)."""
+    col = kit.coleccion("PlacaPresion")
+    bm = bmesh.new()                                          # origen: abajo al centro, en el piso
+    losa_hueco(bm, (-0.4, -0.29, 0.29, 0.4), (-0.4, -0.29, 0.29, 0.4), 0.0, 0.03, hueco=(1, 1), mat=0)   # marco
+    caja(bm, -0.29, 0.29, -0.29, 0.29, 0.002, 0.006, 1)       # fondo oscuro del hueco
+    marco = objeto("PlacaPresion", bm, [piedra_c(), brea()], col,
+                   uv={0: dict(tam=(32, 32), origen=(-0.4, -0.4, 0)), 1: dict(tam=(8, 8))})
+    # Contorno fino en todo el marco: el de 1 texel (3 cm) sube mas que el boton y tapa sus bordes.
+    afinar(marco, range(len(marco.data.vertices)))
+    bm = bmesh.new()                                          # origen abajo al centro: baja en Z al pisarla
+    caja(bm, -0.27, 0.27, -0.27, 0.27, 0.0, 0.05, 0)          # placa de hierro
+    caja(bm, -0.09, 0.09, -0.09, 0.09, 0.05, 0.062, 1)        # marca roja (se enciende al activarse)
+    for x in (-0.2, 0.2):                                     # remaches
+        for y in (-0.2, 0.2):
+            caja(bm, x - 0.02, x + 0.02, y - 0.02, y + 0.02, 0.05, 0.058, 0)
+    boton = objeto("PlacaPresion_Boton", bm, [hierro(), M('M_Rojo', 'T_Rojo')], col,
+                   uv={0: dict(tam=(16, 16)), 1: dict(tam=(8, 8))})
+    # Tambien fino: el boton mide 5 cm de alto y un contorno de 3 cm se veia como barras negras encima.
+    afinar(boton, range(len(boton.data.vertices)))
+    hijo(boton, marco, (0, 0, 0))
+    return [marco, boton], [(col, "Detalles",
+            "Placa de presion 0.8 x 0.8 x 0.06 m, a ras de piso. PlacaPresion_Boton tiene el origen abajo: "
+            "sin pisar, arriba (tope a 5 cm); pisada, baja 3.5 cm en Z.", ("interruptor", "placa", "interactivo"))]
+
 # ------------------------------------------------------------------ ROCAS (Geometry Nodes)
 def gn_roca():
     viejo = bpy.data.node_groups.get("GN_Roca")
@@ -373,6 +435,8 @@ PIEZAS = [
     ("rocas.blend", p_rocas),
     ("pedestal.blend", p_pedestal),
     ("trampilla.blend", p_trampilla),
+    ("antorcha_pie.blend", p_antorcha_pie),
+    ("placa_presion.blend", p_placa_presion),
 ]
 
 # ------------------------------------------------------------------ verificacion y flujo
