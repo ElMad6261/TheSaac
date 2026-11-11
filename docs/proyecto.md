@@ -230,7 +230,7 @@ res://
 
 ### Semana 7 · 9 – 15 nov · Cierre de interacciones e inicio de integración
 - [x] Hoja de la puerta como AnimatableBody3D; no atraviesa ni atrapa al jugador
-- [x] Aviso en pantalla "E · Abrir" (`Interactor` + `scenes/ui/aviso_interaccion.tscn`)
+- [x] Aviso en pantalla "E · Abrir": globo pixelado encima del objeto (`Interactor` + `InteractionPrompt` + `scenes/ui/aviso_interaccion.tscn`)
 - [ ] Un solo script de puerta parametrizado (ángulo, velocidad, bloqueada)
 - [ ] *(Deseable)* `FloorGenerator.cs` + `basement_1.tres`
 

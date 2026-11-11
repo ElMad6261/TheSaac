@@ -3,8 +3,8 @@ using Godot;
 /// <summary>
 /// Antorcha que se enciende y se apaga. Sirve para la de muro (antorcha_interactiva.tscn) y la de pie
 /// (antorcha_pie.tscn); solo cambia RutaLlama.
-/// - Es un IInteractable: si UsableConE está activo, el Interactor de Isaac muestra "E · Encender" o
-///   "E · Apagar" cuando está cerca y, al presionar E, llama a Interact.
+/// - Es un IInteractable: si UsableConE está activo, el Interactor de Isaac muestra "E ENCENDER" o
+///   "E APAGAR" encima de la llama cuando está cerca y, al presionar E, llama a Interact.
 /// - Es un IActivable: una placa de presión (u otro objeto) la enciende o apaga con Activar.
 ///
 /// Usa sus nodos "Luz" (OmniLight3D) y la malla de la llama (RutaLlama, viene del .blend).
@@ -23,6 +23,9 @@ public partial class TorchInteraction : Node3D, IInteractable, IActivable
 
 	/// <summary>Segundos que tarda la luz en subir o bajar.</summary>
 	[Export] public float EncendidoSegundos { get; set; } = 0.3f;
+
+	/// <summary>Altura (m) sobre el origen de la antorcha donde sale el globo del aviso: arriba de la llama.</summary>
+	[Export] public float AlturaAviso { get; set; } = 1.6f;
 
 	/// <summary>Ruta a la malla de la llama dentro del modelo importado.</summary>
 	[Export] public NodePath RutaLlama { get; set; } = "Modelo/Antorcha/Antorcha_Llama";
@@ -54,6 +57,8 @@ public partial class TorchInteraction : Node3D, IInteractable, IActivable
 		delta.Y = 0f;
 		return delta.Length();
 	}
+
+	public Vector3 PuntoAviso => GlobalPosition + new Vector3(0f, AlturaAviso, 0f);
 
 	public string TextoAccion(Node3D jugador)
 	{

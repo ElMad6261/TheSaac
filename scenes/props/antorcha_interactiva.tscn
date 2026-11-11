@@ -5,3 +5,4 @@
 
 [node name="AntorchaInteractiva" instance=ExtResource("1_antorcha")]
 script = ExtResource("2_logica")
+AlturaAviso = 0.9

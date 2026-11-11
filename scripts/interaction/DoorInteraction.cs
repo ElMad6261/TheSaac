@@ -6,7 +6,7 @@ using System;
 /// (Abrir, Cerrar, Bloqueada y, en la del tesoro, Desbloquear).
 ///
 /// Es un IInteractable: no lee el teclado. El Interactor de Isaac la elige cuando está cerca, muestra
-/// "E · Abrir" o "E · Cerrar" (TextoAccion) y, al presionar E, llama a Interact.
+/// el globo "E ABRIR" o "E CERRAR" (TextoAccion) encima de la puerta y, al presionar E, llama a Interact.
 ///
 /// Va en la raíz de puerta.tscn, puerta_jefe.tscn y puerta_tesoro.tscn. Necesita sus hijos directos
 /// "AnimationPlayer" y "Hoja" (la hoja tiene el origen en la bisagra y mide 1.2 m).
@@ -20,6 +20,10 @@ public partial class DoorInteraction : Node3D, IInteractable
 	/// <summary>Radio de Isaac (cápsula de 0.35 m) más un poco de holgura. Se suma al largo de la hoja
 	/// para saber si al cerrar lo golpearía.</summary>
 	[Export] public float MargenBarrido { get; set; } = 0.4f;
+
+	/// <summary>Altura (m) sobre el piso a la que apunta el globo del aviso: la parte alta de la hoja (mide 2.3 m).
+	/// Con la cámara inclinada desde arriba, más alto lo manda casi al borde de la pantalla.</summary>
+	[Export] public float AlturaAviso { get; set; } = 2.0f;
 
 	/// <summary>Sala con enemigos: E reproduce "Bloqueada" en vez de abrir. La sala lo pone en false al despejarse.</summary>
 	[Export] public bool Bloqueada { get; set; }
@@ -52,6 +56,9 @@ public partial class DoorInteraction : Node3D, IInteractable
 		_anim.AnimationFinished += OnAnimacionTerminada;
 		AddToGroup("interactuables");
 	}
+
+	/// <summary>Encima del centro del vano.</summary>
+	public Vector3 PuntoAviso => ToGlobal(_hoja.Position + CentroHojaLocal + new Vector3(0f, AlturaAviso, 0f));
 
 	/// <summary>Qué dice el aviso. Null (sin aviso) mientras la hoja se mueve, o si está abierta
 	/// e Isaac está donde la hoja lo golpearía al cerrar.</summary>
