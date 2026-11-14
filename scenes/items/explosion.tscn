@@ -1,0 +1,92 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/items/Explosion.cs" id="1_logica"]
+[ext_resource type="PackedScene" path="res://scenes/items/mancha_explosion.tscn" id="2_mancha"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_destello"]
+shading_mode = 0
+albedo_color = Color(1, 0.78, 0.3, 1)
+
+[sub_resource type="SphereMesh" id="Malla_destello"]
+material = SubResource("Mat_destello")
+radius = 0.5
+height = 1.0
+radial_segments = 12
+rings = 6
+
+[sub_resource type="StandardMaterial3D" id="Mat_particula"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+
+[sub_resource type="BoxMesh" id="Malla_fuego"]
+material = SubResource("Mat_particula")
+size = Vector3(0.16, 0.16, 0.16)
+
+[sub_resource type="Gradient" id="Rampa_fuego"]
+offsets = PackedFloat32Array(0, 0.35, 0.75, 1)
+colors = PackedColorArray(1, 0.95, 0.77, 1, 1, 0.68, 0.16, 1, 0.78, 0.2, 0.08, 1, 0.78, 0.2, 0.08, 0)
+
+[sub_resource type="BoxMesh" id="Malla_humo"]
+material = SubResource("Mat_particula")
+size = Vector3(0.24, 0.24, 0.24)
+
+[sub_resource type="Gradient" id="Rampa_humo"]
+offsets = PackedFloat32Array(0, 0.6, 1)
+colors = PackedColorArray(0.17, 0.11, 0.08, 0.9, 0.24, 0.2, 0.18, 0.7, 0.24, 0.2, 0.18, 0)
+
+[node name="Explosion" type="Node3D"]
+script = ExtResource("1_logica")
+EscenaMancha = ExtResource("2_mancha")
+
+[node name="Destello" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+cast_shadow = 0
+mesh = SubResource("Malla_destello")
+
+[node name="Luz" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+light_color = Color(1, 0.62, 0.25, 1)
+light_energy = 8.0
+omni_range = 6.0
+
+[node name="Fuego" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+cast_shadow = 0
+emitting = false
+amount = 20
+lifetime = 0.45
+one_shot = true
+explosiveness = 1.0
+mesh = SubResource("Malla_fuego")
+emission_shape = 1
+emission_sphere_radius = 0.3
+direction = Vector3(0, 1, 0)
+spread = 180.0
+gravity = Vector3(0, -3, 0)
+initial_velocity_min = 3.0
+initial_velocity_max = 6.5
+scale_amount_min = 0.6
+scale_amount_max = 1.4
+color_ramp = SubResource("Rampa_fuego")
+
+[node name="Humo" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+cast_shadow = 0
+emitting = false
+amount = 12
+lifetime = 1.0
+one_shot = true
+explosiveness = 0.85
+mesh = SubResource("Malla_humo")
+emission_shape = 1
+emission_sphere_radius = 0.5
+direction = Vector3(0, 1, 0)
+spread = 50.0
+gravity = Vector3(0, 1.2, 0)
+initial_velocity_min = 0.8
+initial_velocity_max = 2.2
+scale_amount_min = 0.8
+scale_amount_max = 1.6
+color_ramp = SubResource("Rampa_humo")

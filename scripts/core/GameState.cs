@@ -19,6 +19,15 @@ public partial class GameState : Node
 	/// <summary>Semilla con la que se armó el piso actual. 0 = todavía no hay (el próximo piso se arma al azar).</summary>
 	public int Seed { get; private set; }
 
+	/// <summary>Bombas con las que Isaac empieza cada partida.</summary>
+	public const int BombasIniciales = 1;
+
+	/// <summary>Tope de bombas que puede cargar (el contador del HUD tiene dos cifras).</summary>
+	public const int BombasMaximas = 99;
+
+	/// <summary>Bombas que lleva Isaac. Se guardan aquí para que pasen de un piso al siguiente.</summary>
+	public int Bombas { get; private set; } = BombasIniciales;
+
 	public override void _EnterTree()
 	{
 		Instance = this;
@@ -36,5 +45,37 @@ public partial class GameState : Node
 	{
 		CurrentFloor = null;
 		Seed = 0;
+		ReiniciarBombas();
+	}
+
+	/// <summary>Suma bombas (al recoger una del piso) y avisa con GameEvents.BombsChanged.</summary>
+	public void AgregarBombas(int cantidad)
+	{
+		PonerBombas(Bombas + cantidad);
+	}
+
+	/// <summary>Gasta una bomba. Devuelve false, sin gastar nada, si Isaac no tiene ninguna.</summary>
+	public bool GastarBomba()
+	{
+		if (Bombas <= 0)
+		{
+			return false;
+		}
+
+		PonerBombas(Bombas - 1);
+		return true;
+	}
+
+	/// <summary>Vuelve a las bombas del inicio (partida nueva, o reintento después de morir).</summary>
+	public void ReiniciarBombas()
+	{
+		PonerBombas(BombasIniciales);
+	}
+
+	// Único lugar donde cambia el número: así la señal sale siempre que cambia.
+	private void PonerBombas(int cantidad)
+	{
+		Bombas = Mathf.Clamp(cantidad, 0, BombasMaximas);
+		GameEvents.Instance?.EmitSignal(GameEvents.SignalName.BombsChanged, Bombas);
 	}
 }

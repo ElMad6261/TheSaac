@@ -3,11 +3,16 @@
 [ext_resource type="PackedScene" path="res://scenes/rooms/sala_normal.tscn" id="1_sala"]
 [ext_resource type="PackedScene" path="res://scenes/player/jugador.tscn" id="2_jugador"]
 [ext_resource type="Script" uid="uid://qosa7dgin227" path="res://scripts/rooms/RoomCamera.cs" id="3_camara"]
-[ext_resource type="PackedScene" uid="uid://7iiiek8mjgw8" path="res://scenes/props/vasija.tscn" id="4_b4qdh"]
-[ext_resource type="PackedScene" path="res://scenes/props/roca.tscn" id="4_roca"]
-[ext_resource type="PackedScene" uid="uid://q448ndrt4trn" path="res://scenes/rooms/modulos/muro_vano.tscn" id="5_5ojx0"]
-[ext_resource type="PackedScene" path="res://scenes/props/pedestal.tscn" id="5_pedestal"]
-[ext_resource type="PackedScene" path="res://scenes/props/antorcha_interactiva.tscn" id="6_antorcha"]
+[ext_resource type="PackedScene" uid="uid://7iiiek8mjgw8" path="res://scenes/props/vasija.tscn" id="4_vasija"]
+[ext_resource type="PackedScene" path="res://scenes/props/roca.tscn" id="5_roca"]
+[ext_resource type="PackedScene" path="res://scenes/props/antorcha_pie.tscn" id="6_antorcha_pie"]
+[ext_resource type="PackedScene" path="res://scenes/props/placa_presion.tscn" id="7_placa"]
+[ext_resource type="PackedScene" path="res://scenes/items/bomba_recogible.tscn" id="8_bomba"]
+[ext_resource type="PackedScene" path="res://scenes/props/puas.tscn" id="9_puas"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/sala_tesoro.tscn" id="10_tesoro"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/sala_jefe.tscn" id="11_jefe"]
+[ext_resource type="PackedScene" path="res://scenes/props/puerta/puerta_tesoro.tscn" id="12_puerta_tesoro"]
+[ext_resource type="PackedScene" path="res://scenes/props/puerta/puerta_jefe.tscn" id="13_puerta_jefe"]
 
 [sub_resource type="Environment" id="Environment_sotano"]
 background_mode = 1
@@ -18,59 +23,85 @@ ambient_light_energy = 0.5
 tonemap_mode = 2
 glow_enabled = true
 
-[node name="NivelPrueba" type="Node3D" unique_id=1435102732]
+[node name="NivelPrueba" type="Node3D"]
 
-[node name="Entorno" type="WorldEnvironment" parent="." unique_id=1718692148]
+[node name="Entorno" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_sotano")
 
-[node name="Luz_General" type="DirectionalLight3D" parent="." unique_id=542589563]
+[node name="Luz_General" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.9063, -0.3462, 0.2424, 0, 0.5736, 0.8192, -0.4226, -0.7424, 0.5199, 0, 10, 0)
 light_color = Color(1, 0.9, 0.8, 1)
 light_energy = 0.35
 shadow_enabled = true
 
-[node name="Camara" type="Camera3D" parent="." unique_id=1738967473]
+[node name="Camara" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.5, 0.8660254, 0, -0.8660254, 0.5, 0, 15.3224, 8.05)
 current = true
 fov = 32.0
 script = ExtResource("3_camara")
 
-[node name="SalaA" parent="." unique_id=1222927016 instance=ExtResource("1_sala")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0074834824, -0.013246298, 0.014233112)
+[node name="SalaInicio" parent="." instance=ExtResource("1_sala")]
 DoorNorth = true
+DoorWest = true
+DoorSceneWest = ExtResource("12_puerta_tesoro")
 
-[node name="Roca1" parent="SalaA" unique_id=475499947 instance=ExtResource("4_roca")]
+[node name="Roca1" parent="SalaInicio" instance=ExtResource("5_roca")]
 transform = Transform3D(0.939693, 0, 0.34202, 0, 1, 0, -0.34202, 0, 0.939693, -3.6, 0, -1.6)
 
-[node name="Roca2" parent="SalaA" unique_id=1929841482 instance=ExtResource("4_roca")]
+[node name="Roca2" parent="SalaInicio" instance=ExtResource("5_roca")]
 transform = Transform3D(-0.766044, 0, 0.642788, 0, 1, 0, -0.642788, 0, -0.766044, 3.4, 0, 1.7)
 
-[node name="Roca3" parent="SalaA" unique_id=1817709186 instance=ExtResource("4_roca")]
-transform = Transform3D(0.34202, 0, 0.939693, 0, 1, 0, -0.939693, 0, 0.34202, -2.6, 0, 1.9)
+[node name="Vasija" parent="SalaInicio" instance=ExtResource("4_vasija")]
+transform = Transform3D(0.34202, 0, 0.939693, 0, 1, 0, -0.939693, 0, 0.34202, -1.2, 0, -2.8)
 
-[node name="Vasija" parent="SalaA" unique_id=1211045746 instance=ExtResource("4_b4qdh")]
-transform = Transform3D(0.34202, 0, 0.939693, 0, 1, 0, -0.939693, 0, 0.34202, -1.2182379, 0, -2.7804644)
+[node name="AntorchaPie" parent="SalaInicio" instance=ExtResource("6_antorcha_pie")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6, 0, 1.6)
 
-[node name="AntorchaInteractiva" parent="SalaA" instance=ExtResource("6_antorcha")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.25, 1.35, 0)
+[node name="PlacaPresion" parent="SalaInicio" instance=ExtResource("7_placa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 1.6)
+Objetivos = Array[NodePath]([NodePath("../AntorchaPie")])
 
-[node name="SalaB" parent="." unique_id=138713856 instance=ExtResource("1_sala")]
+[node name="Puas1" parent="SalaInicio" instance=ExtResource("9_puas")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4, 0, -1.4)
+
+[node name="Puas2" parent="SalaInicio" instance=ExtResource("9_puas")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3.8, 0, -0.4)
+
+[node name="Bomba1" parent="SalaInicio" instance=ExtResource("8_bomba")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 0, 1)
+
+[node name="Bomba2" parent="SalaInicio" instance=ExtResource("8_bomba")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 2.2)
+
+[node name="SalaPremio" parent="." instance=ExtResource("1_sala")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8)
+DoorNorth = true
+DoorSouth = true
+DoorSceneNorth = ExtResource("13_puerta_jefe")
+PremioAlDespejar = ExtResource("8_bomba")
+
+[node name="Roca1" parent="SalaPremio" instance=ExtResource("5_roca")]
+transform = Transform3D(0.939693, 0, 0.34202, 0, 1, 0, -0.34202, 0, 0.939693, 2.6, 0, -0.9)
+
+[node name="Roca2" parent="SalaPremio" instance=ExtResource("5_roca")]
+transform = Transform3D(-0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, -0.866025, 3.6, 0, -0.1)
+
+[node name="Roca3" parent="SalaPremio" instance=ExtResource("5_roca")]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 2.8, 0, 0.9)
+
+[node name="Puas1" parent="SalaPremio" instance=ExtResource("9_puas")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6, 0, 1.2)
+
+[node name="Puas2" parent="SalaPremio" instance=ExtResource("9_puas")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -3.2, 0, -1.2)
+
+[node name="SalaTesoro" parent="." instance=ExtResource("10_tesoro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 0)
+DoorEast = true
+
+[node name="SalaJefe" parent="." instance=ExtResource("11_jefe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -16)
 DoorSouth = true
 
-[node name="Pedestal" parent="SalaB" unique_id=47267406 instance=ExtResource("5_pedestal")]
-
-[node name="Roca1" parent="SalaB" unique_id=863755141 instance=ExtResource("4_roca")]
-transform = Transform3D(-0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, -0.866025, 3.7, 0, -1.9)
-
-[node name="Roca2" parent="SalaB" unique_id=1778647863 instance=ExtResource("4_roca")]
-transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -3.4, 0, -1.7)
-
-[node name="MuroVano" parent="SalaB" unique_id=667960258 instance=ExtResource("5_5ojx0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0029637814, 11.497815)
-
-[node name="MuroVano" parent="SalaB/MuroVano" unique_id=1086463181 instance=ExtResource("5_5ojx0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.019292712, -6.9838576)
-
-[node name="Jugador" parent="." unique_id=958481965 instance=ExtResource("2_jugador")]
+[node name="Jugador" parent="." instance=ExtResource("2_jugador")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 1)

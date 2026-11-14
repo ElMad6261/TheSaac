@@ -7,7 +7,9 @@ using Godot;
 /// - Las FLECHAS (acciones look_forward, look_back, look_left, look_right) giran solo la CABEZA, aparte del cuerpo.
 ///   Sin flechas, la cabeza mira hacia donde camina el cuerpo. HeadScale ajusta su tamaño.
 /// - Isaac gira suavemente hacia donde camina y reproduce "Caminar" (en movimiento) o "Quieto" (parado).
-///   Las dos animaciones vienen de assets/blend/isaac.blend (se generan con tools/blender/animar_isaac.py).
+/// - Cuando pierde vida, PlayerHurt llama a MostrarHerido: por un momento reproduce "Herido" (encogido, con los
+///   brazos frente al pecho) y echa la cabeza hacia atrás. Puede seguir caminando mientras tanto.
+///   Las tres animaciones vienen de assets/blend/isaac.blend (se generan con tools/blender/animar_isaac.py).
 /// - El ratón no se usa: la cámara es de la sala (RoomCamera), no del jugador.
 ///
 /// Escena: scenes/player/jugador.tscn = CharacterBody3D (este script) + Colision (cápsula) + Modelo → Isaac.
@@ -41,6 +43,9 @@ public partial class PlayerController : CharacterBody3D
 	/// </summary>
 	[Export(PropertyHint.Range, "0.8,1.1,0.01")] public float HeadScale { get; set; } = 0.9f;
 
+	/// <summary>Grados que la cabeza se echa hacia atrás en la pose de daño: desde la cámara de arriba se le ve la cara.</summary>
+	[Export] public float HurtHeadTilt { get; set; } = 22.0f;
+
 	// Segundos que dura el fundido al cambiar entre "Quieto" y "Caminar".
 	private const double AnimationBlend = 0.15;
 
@@ -50,6 +55,8 @@ public partial class PlayerController : CharacterBody3D
 	private int _headBone = -1;          // índice del hueso "Head" (-1 = no se encontró)
 	private Quaternion _headRest;        // rotación del hueso Head en reposo (mirando al frente)
 	private float _headYaw;              // giro actual de la cabeza respecto al cuerpo, en radianes
+	private float _headTilt;             // inclinación actual de la cabeza hacia atrás, en radianes
+	private double _hurtTime;            // segundos que le quedan a la pose de daño (0 = no está herido)
 
 	public override void _Ready()
 	{
@@ -117,9 +124,20 @@ public partial class PlayerController : CharacterBody3D
 		MoveAndSlide();
 	}
 
+	/// <summary>Muestra la pose de daño durante esos segundos. Lo llama PlayerHurt cuando Isaac pierde vida.</summary>
+	public void MostrarHerido(float segundos)
+	{
+		_hurtTime = segundos;
+	}
+
 	// La animación y la cabeza son solo visuales: van en _Process (cada cuadro dibujado), no en la física.
 	public override void _Process(double delta)
 	{
+		if (_hurtTime > 0)
+		{
+			_hurtTime -= delta;
+		}
+
 		UpdateAnimation();
 		UpdateHead((float)delta);
 	}
@@ -147,6 +165,13 @@ public partial class PlayerController : CharacterBody3D
 		bool walking = speed > 0.1f;
 		string wanted = walking ? "Caminar" : "Quieto";
 
+		// La pose de daño manda sobre las otras dos mientras dura (a su velocidad normal).
+		bool hurt = _hurtTime > 0;
+		if (hurt)
+		{
+			wanted = "Herido";
+		}
+
 		// Play con fundido: al cambiar de animación las poses se mezclan en vez de saltar de una a otra.
 		if (_animation.CurrentAnimation != wanted)
 		{
@@ -154,7 +179,7 @@ public partial class PlayerController : CharacterBody3D
 		}
 
 		// Al caminar, el ciclo va más rápido cuanto más rápido va Isaac (WalkAnimSpeed ciclos/s a velocidad máxima).
-		_animation.SpeedScale = walking ? WalkAnimSpeed * Mathf.Clamp(speed / Speed, 0.5f, 1.5f) : 1.0f;
+		_animation.SpeedScale = walking && !hurt ? WalkAnimSpeed * Mathf.Clamp(speed / Speed, 0.5f, 1.5f) : 1.0f;
 	}
 
 	// Cabeza: las flechas la giran respecto al cuerpo. El hueso Head no tiene animación,
@@ -181,8 +206,15 @@ public partial class PlayerController : CharacterBody3D
 		float weight = 1.0f - Mathf.Exp(-HeadTurnSpeed * dt);
 		_headYaw = Mathf.LerpAngle(_headYaw, targetYaw, weight);
 
+		// Pose de daño: la cabeza se echa hacia atrás (y vuelve sola al terminar), con el mismo giro suave.
+		float targetTilt = _hurtTime > 0 ? Mathf.DegToRad(HurtHeadTilt) : 0.0f;
+		_headTilt = Mathf.Lerp(_headTilt, targetTilt, weight);
+
 		// El giro es alrededor del eje vertical del hueso (su eje Y local), partiendo de la pose de reposo.
-		_skeleton.SetBonePoseRotation(_headBone, _headRest * new Quaternion(Vector3.Up, _headYaw));
+		// La inclinación va después, alrededor del eje X del hueso ya girado: así siempre es hacia atrás de la cara,
+		// mire a donde mire. (Con Vector3.Right la cabeza se agacha y la cara se esconde; con Left se levanta.)
+		_skeleton.SetBonePoseRotation(_headBone,
+			_headRest * new Quaternion(Vector3.Up, _headYaw) * new Quaternion(Vector3.Left, _headTilt));
 
 		// Tamaño de la cabeza: escalar el hueso Head encoge la cabeza (y la cara, que va pegada a él)
 		// desde la base del cuello, sin tocar el modelo de Blender.

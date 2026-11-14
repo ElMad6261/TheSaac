@@ -216,7 +216,7 @@ res://
 - [ ] `IInteractable`, `Interactor` y `DoorInteraction.cs` sobre la puerta gris (Area3D + E + giro de 90°)
 - [ ] Variante con RayCast3D y decisión final
 - [ ] `Room.cs` con estados y señal `RoomCleared`
-- [ ] Interruptor y antorcha que se enciende
+- [x] Interruptor (placa de presión en el piso) y antorcha que se enciende (`PressurePlate.cs`, `TorchInteraction.cs`, antorcha de pie)
 - [x] Animaciones de Isaac en Blender (quieto y caminar), generadas con `tools/blender/animar_isaac.py`, y su reproducción en Godot con un AnimationPlayer en `PlayerController.cs`
 
 **Hito 25 oct — rebanada vertical:** una sala con módulos reales (sin textura) y la puerta abriéndose dentro de un build.
@@ -230,7 +230,7 @@ res://
 
 ### Semana 7 · 9 – 15 nov · Cierre de interacciones e inicio de integración
 - [x] Hoja de la puerta como AnimatableBody3D; no atraviesa ni atrapa al jugador
-- [x] Aviso en pantalla "E · Abrir" (`Interactor` + `scenes/ui/aviso_interaccion.tscn`)
+- [x] Aviso en pantalla "E · Abrir": globo pixelado encima del objeto (`Interactor` + `InteractionPrompt` + `scenes/ui/aviso_interaccion.tscn`)
 - [ ] Un solo script de puerta parametrizado (ángulo, velocidad, bloqueada)
 - [ ] *(Deseable)* `FloorGenerator.cs` + `basement_1.tres`
 

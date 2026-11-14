@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/texturas/T_Mancha_Explosion.png" id="1_mancha"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_mancha"]
+transparency = 1
+albedo_texture = ExtResource("1_mancha")
+metallic_specular = 0.0
+roughness = 1.0
+texture_filter = 0
+
+[sub_resource type="PlaneMesh" id="Malla_mancha"]
+material = SubResource("Mat_mancha")
+size = Vector2(2, 2)
+
+[node name="ManchaExplosion" type="MeshInstance3D"]
+cast_shadow = 0
+mesh = SubResource("Malla_mancha")

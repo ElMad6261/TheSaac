@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 generar_kit.py - Regenera las texturas y los .blend del kit modular de TheSaac:
-las 12 piezas y las variantes de puerta de la sala del tesoro y de la sala del jefe.
+las piezas (muros, puertas, antorchas, placa de presion...) y las variantes de puerta de la sala del tesoro y de la sala del jefe.
 
 Uso, desde la raiz del repositorio (Blender 5.1):
     blender --background --factory-startup --python tools/blender/generar_kit.py

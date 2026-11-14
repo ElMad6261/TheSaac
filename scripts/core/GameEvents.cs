@@ -16,6 +16,14 @@ public partial class GameEvents : Node
 	[Signal]
 	public delegate void RoomEnteredEventHandler(Room room);
 
+	/// <summary>Una sala quedó despejada (sin enemigos). Las puertas la escuchan para abrirse.</summary>
+	[Signal]
+	public delegate void RoomClearedEventHandler(Room room);
+
+	/// <summary>Cambió la cantidad de bombas de Isaac (recogió o colocó una). La escucha el HUD.</summary>
+	[Signal]
+	public delegate void BombsChangedEventHandler(int bombas);
+
 	public override void _EnterTree()
 	{
 		Instance = this;

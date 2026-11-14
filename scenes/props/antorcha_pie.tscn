@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/blend/antorcha_pie.blend" id="1_modelo"]
+[ext_resource type="Script" path="res://scripts/interaction/TorchInteraction.cs" id="2_logica"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_poste"]
+height = 1.1
+radius = 0.2
+
+[node name="AntorchaPie" type="Node3D"]
+script = ExtResource("2_logica")
+RutaLlama = NodePath("Modelo/AntorchaPie/AntorchaPie_Llama")
+
+[node name="Modelo" parent="." instance=ExtResource("1_modelo")]
+
+[node name="Cuerpo" type="StaticBody3D" parent="."]
+
+[node name="Forma" type="CollisionShape3D" parent="Cuerpo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+shape = SubResource("CylinderShape3D_poste")
+
+[node name="Luz" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+light_color = Color(1, 0.7, 0.42, 1)
+light_energy = 2.2
+shadow_enabled = true
+omni_range = 7.0

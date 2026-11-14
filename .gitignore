@@ -38,3 +38,6 @@ desktop.ini
 # ── Addon del MCP de Godot ──────────────────────────────
 # Cada quien lo instala en su maquina (ver docs/proyecto.md, seccion 9).
 addons/
+
+# ── Python (scripts de tools/) ─────────────────────────
+__pycache__/

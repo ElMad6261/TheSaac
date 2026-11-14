@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-kit_piezas.py - Las 13 piezas del kit de TheSaac (matriz del taller de preproduccion).
+kit_piezas.py - Las piezas del kit de TheSaac (matriz del taller de preproduccion).
 Usa kit_isaac.py (texturas, materiales, contorno). Convenciones:
   * Escala 1:1, metros. Frente hacia -Y. Origen abajo al centro, salvo piezas que giran
     (hoja de puerta, palanca, tapas de trampilla): origen en la bisagra.
@@ -196,6 +196,68 @@ def p_interruptor():
             "Interruptor de palanca 0.3 x 0.5 x 0.2 m. La palanca gira en X: 0 = arriba (apagado), +110 = abajo (activado).",
             ("interruptor", "palanca", "interactivo"))]
 
+# ------------------------------------------------------------------ ANTORCHA DE PIE
+def p_antorcha_pie():
+    """Antorcha de pie para el centro de la sala: se lee desde la camara de arriba (la de muro queda chica)."""
+    col = kit.coleccion("AntorchaPie")
+    bm = bmesh.new()                                          # origen: abajo al centro, en el piso
+    torre(bm, [(0.2, 0.2, 0.0), (0.2, 0.2, 0.08), (0.13, 0.13, 0.14)], 0)     # base de piedra
+    caja(bm, -0.04, 0.04, -0.04, 0.04, 0.14, 0.9, 1)                          # poste
+    caja(bm, -0.065, 0.065, -0.065, 0.065, 0.16, 0.22, 1)                     # collar de abajo
+    caja(bm, -0.065, 0.065, -0.065, 0.065, 0.5, 0.56, 1)                      # collar del medio
+    torre(bm, [(0.06, 0.06, 0.88), (0.2, 0.2, 1.0), (0.2, 0.2, 1.06)], 1)     # cuenco
+    caja(bm, -0.16, 0.16, -0.16, 0.16, 1.06, 1.09, 2)                         # brasas (brea)
+    i0 = len(bm.verts)
+    for sx in (-1, 1):                                        # cuatro puntas en las esquinas del cuenco
+        for sy in (-1, 1):
+            x0, x1 = sorted((sx * 0.165, sx * 0.2))
+            y0, y1 = sorted((sy * 0.165, sy * 0.2))
+            caja(bm, x0, x1, y0, y1, 1.06, 1.17, 1)
+    ant = objeto("AntorchaPie", bm, [piedra_c(), hierro(), brea()], col,
+                 uv={0: dict(tam=(32, 32), origen=(-0.2, -0.2, 0)), 1: dict(tam=(16, 16)), 2: dict(tam=(8, 8))})
+    afinar(ant, range(i0, i0 + 32), factor=0.5)
+    bm = bmesh.new()
+    kit.llama(bm)
+    bmesh.ops.scale(bm, vec=(2.8, 2.8, 3.0), verts=bm.verts)  # 28 x 36 cm
+    llama = objeto("AntorchaPie_Llama", bm, [M('M_Fuego', 'T_Fuego', emision=4.0)], col,
+                   uv={0: dict(tam=(8, 16), origen=(-0.14, -0.14, 0))}, con_contorno=False)
+    hijo(llama, ant, (0, 0, 1.07))
+    luz = bpy.data.objects.new("AntorchaPie_PuntoLuz", None)
+    luz.empty_display_type = 'SPHERE'
+    luz.empty_display_size = 0.05
+    col.objects.link(luz)
+    hijo(luz, ant, (0, 0, 1.3))
+    return [ant, llama, luz], [(col, "Detalles",
+            "Antorcha de pie 0.4 x 0.4 x 1.17 m (con llama, 1.43 m). Origen abajo al centro. AntorchaPie_Llama se "
+            "oculta cuando esta apagada; AntorchaPie_PuntoLuz marca donde va el OmniLight3D.",
+            ("antorcha", "luz", "interactivo"))]
+
+# ------------------------------------------------------------------ PLACA DE PRESION
+def p_placa_presion():
+    """Placa de presion en el piso: se activa cuando Isaac pasa encima (el boton se hunde 3.5 cm)."""
+    col = kit.coleccion("PlacaPresion")
+    bm = bmesh.new()                                          # origen: abajo al centro, en el piso
+    losa_hueco(bm, (-0.4, -0.29, 0.29, 0.4), (-0.4, -0.29, 0.29, 0.4), 0.0, 0.03, hueco=(1, 1), mat=0)   # marco
+    caja(bm, -0.29, 0.29, -0.29, 0.29, 0.002, 0.006, 1)       # fondo oscuro del hueco
+    marco = objeto("PlacaPresion", bm, [piedra_c(), brea()], col,
+                   uv={0: dict(tam=(32, 32), origen=(-0.4, -0.4, 0)), 1: dict(tam=(8, 8))})
+    # Contorno fino en todo el marco: el de 1 texel (3 cm) sube mas que el boton y tapa sus bordes.
+    afinar(marco, range(len(marco.data.vertices)))
+    bm = bmesh.new()                                          # origen abajo al centro: baja en Z al pisarla
+    caja(bm, -0.27, 0.27, -0.27, 0.27, 0.0, 0.05, 0)          # placa de hierro
+    caja(bm, -0.09, 0.09, -0.09, 0.09, 0.05, 0.062, 1)        # marca roja (se enciende al activarse)
+    for x in (-0.2, 0.2):                                     # remaches
+        for y in (-0.2, 0.2):
+            caja(bm, x - 0.02, x + 0.02, y - 0.02, y + 0.02, 0.05, 0.058, 0)
+    boton = objeto("PlacaPresion_Boton", bm, [hierro(), M('M_Rojo', 'T_Rojo')], col,
+                   uv={0: dict(tam=(16, 16)), 1: dict(tam=(8, 8))})
+    # Tambien fino: el boton mide 5 cm de alto y un contorno de 3 cm se veia como barras negras encima.
+    afinar(boton, range(len(boton.data.vertices)))
+    hijo(boton, marco, (0, 0, 0))
+    return [marco, boton], [(col, "Detalles",
+            "Placa de presion 0.8 x 0.8 x 0.06 m, a ras de piso. PlacaPresion_Boton tiene el origen abajo: "
+            "sin pisar, arriba (tope a 5 cm); pisada, baja 3.5 cm en Z.", ("interruptor", "placa", "interactivo"))]
+
 # ------------------------------------------------------------------ ROCAS (Geometry Nodes)
 def gn_roca():
     viejo = bpy.data.node_groups.get("GN_Roca")
@@ -360,6 +422,125 @@ def p_trampilla():
             "Trampilla de salida 1.5 x 0.15 x 1.5 m. Tapas con origen en su bisagra: abrir girando en Y "
             "(Tapa_I -110, Tapa_D +110). Trampilla_Hueco es el fondo negro.", ("trampilla", "meta", "interactivo"))]
 
+# ------------------------------------------------------------------ BOMBA
+# Calavera del frente de la bomba, 10 x 9 px. Sale del diseno pixelado del equipo: craneo ancho, dos cuencas,
+# nariz y dientes. '#' = hueso, 'o' = hueco oscuro (cuencas, nariz, dientes), '.' = se ve el cuerpo.
+CALAVERA_BOMBA = (
+    "..######..",
+    ".########.",
+    "##########",
+    "#oo####oo#",
+    "#oo####oo#",
+    "####oo####",
+    ".########.",
+    "..#o##o#..",
+    "..#o##o#..",
+)
+BOMBA_R = 9.0 / kit.PX          # radio del cuerpo: 9 px = 0.28 m (18 px de ancho, como el sprite)
+# Colores de la bomba: cuerpo casi negro (como una bomba de hierro) y calavera de hueso para que contraste.
+BOMBA_BASE, BOMBA_CLARO, BOMBA_OSCURO, BOMBA_BRILLO = '#34343d', '#44444f', '#25252c', '#a9a9bb'
+BOMBA_HUESO, BOMBA_HUECO = '#d9d2c0', '#1d1d23'
+# Mecha: tramos del cordon en pixeles (x0, x1, z0, z1), medidos desde el centro de arriba de la boquilla.
+# Cada tramo se corre a la izquierda y sube: escalones de pixel que dibujan un cordon inclinado con una curva
+# suave (empinado al salir de la boquilla, mas tendido hacia la punta).
+MECHA_TRAMOS = ((-1, 1, 0, 2), (-2, 0, 1, 4), (-3, -1, 3, 6), (-5, -2, 5, 7), (-7, -4, 6, 8))
+MECHA_PUNTA = (-7, 7)           # donde va la llama: extremo izquierdo del ultimo tramo (x, z) en pixeles
+
+def tex_bomba():
+    """Texturas propias de la bomba: cuerpo, frente con la calavera, boquilla, cuerda de la mecha y llama."""
+    kit.metal('T_Bomba', BOMBA_BASE, BOMBA_CLARO, BOMBA_OSCURO, BOMBA_BRILLO, 31, tam=16, remaches=False)
+    kit.metal('T_Boquilla', '#7c7c88', '#9a9aa8', '#5a5a64', '#c4c4d2', 34, tam=8, remaches=False)
+    # Cuerda: beige con franjas diagonales marron oscuro cada 4 px (se repite sin costura en 8 x 8).
+    l = kit.Lienzo(8, 8, '#cfae75')
+    for y in range(8):
+        for x in range(8):
+            k = (x + y) % 4
+            l.px(x, y, '#5e4023' if k == 0 else ('#e0c592' if k == 1 else '#cfae75'))
+    l.guardar('T_Mecha')
+    # Llama de la punta, 4 x 7 px: borde naranja, centro amarillo claro y punta naranja oscuro.
+    filas = ("....", ".NN.", "nNNn", "nAAn", "nBBn", "nAAn", ".nn.")      # de arriba hacia abajo
+    # El material brilla (emision), y el brillo aclara el color: por eso el borde va en naranja rojizo,
+    # para que en pantalla quede naranja y no se confunda con el centro amarillo.
+    tonos = {'n': '#e0480f', 'N': '#c83214', 'A': '#ffd94a', 'B': '#fff3c4', '.': '#e0480f'}
+    l = kit.Lienzo(4, 7, '#e0480f')
+    for fila, linea in enumerate(filas):
+        for x, c in enumerate(linea):
+            l.px(x, 6 - fila, tonos[c])
+    l.guardar('T_Chispa')
+    kit.Lienzo(2, 2, '#fff3c4').guardar('T_Chispa_Luz')          # chispas sueltas: amarillo claro liso
+    # Frente: 18 x 18 px que cubren el cuerpo de lado a lado. Mismo moteado que T_Bomba y la calavera al centro.
+    rnd = kit.random.Random(32)
+    l = kit.Lienzo(18, 18, BOMBA_BASE)
+    for y in range(18):
+        for x in range(18):
+            r = rnd.random()
+            if r < 0.12:
+                l.px(x, y, BOMBA_OSCURO)
+            elif r < 0.20:
+                l.px(x, y, BOMBA_CLARO)
+    x0, y_arriba = 4, 13                                     # esquina de arriba a la izquierda de la calavera
+    for fila, linea in enumerate(CALAVERA_BOMBA):
+        for col, c in enumerate(linea):
+            if c == '#':
+                l.px(x0 + col, y_arriba - fila, BOMBA_HUESO)
+            elif c == 'o':
+                l.px(x0 + col, y_arriba - fila, BOMBA_HUECO)
+    for x, y in ((4, 14), (5, 15), (4, 15)):                 # brillo de pixel art arriba a la izquierda
+        l.px(x, y, BOMBA_BRILLO)
+    l.guardar('T_Bomba_Calavera')
+
+def p_bomba():
+    """Bomba con calavera (la coloca Isaac con E y tambien es el recogible). Cuerpo redondo de 18 px."""
+    tex_bomba()
+    col = kit.coleccion("Bomba")
+    R = BOMBA_R
+    px = 1.0 / kit.PX                                         # un pixel de textura en metros
+    bm = bmesh.new()                                          # origen: abajo al centro, en el piso
+    bmesh.ops.create_uvsphere(bm, u_segments=16, v_segments=8, radius=R)
+    # Medio gajo de giro: asi una columna de caras queda centrada al frente (-Y) y la calavera no se dobla.
+    bmesh.ops.rotate(bm, verts=bm.verts, cent=(0, 0, 0), matrix=Matrix.Rotation(math.radians(11.25), 3, 'Z'))
+    bmesh.ops.translate(bm, vec=(0, 0, R), verts=bm.verts)
+    bm.normal_update()
+    for f in bm.faces:                                        # caras que miran al frente: material de la calavera
+        f.material_index = 1 if f.normal.y < -0.5 else 0
+    i0 = len(bm.verts)                                        # desde aqui, piezas chicas (contorno fino)
+    alto = 2 * R
+    # Boquilla gris de dos escalones: un collar ancho pegado al cuerpo y un cuello de donde sale la mecha.
+    caja(bm, -3 * px, 3 * px, -3 * px, 3 * px, alto - 1 * px, alto + 1 * px, 2)
+    caja(bm, -2 * px, 2 * px, -2 * px, 2 * px, alto + 1 * px, alto + 2.5 * px, 2)
+    z_mecha = alto + 2.5 * px                                 # arriba de la boquilla: de aqui sale el cordon
+    for x0, x1, z0, z1 in MECHA_TRAMOS:                       # cordon de 2 px de grueso, en escalones
+        caja(bm, x0 * px, x1 * px, -1 * px, 1 * px, z_mecha + z0 * px, z_mecha + z1 * px, 3)
+    bomba = objeto("Bomba", bm, [M('M_Bomba', 'T_Bomba'), M('M_Bomba_Calavera', 'T_Bomba_Calavera'),
+                                 M('M_Boquilla', 'T_Boquilla', rough=0.55, metal=0.4), M('M_Mecha', 'T_Mecha')], col,
+                   uv={0: dict(tam=(16, 16)), 2: dict(tam=(8, 8)), 3: dict(tam=(8, 8))})
+    # La calavera va proyectada de frente (plano XZ): 18 x 18 px de lado a lado del cuerpo.
+    me = bomba.data
+    uvs = me.uv_layers["UVMap"].data
+    for p in me.polygons:
+        if p.material_index == 1:
+            for li in p.loop_indices:
+                co = me.vertices[me.loops[li].vertex_index].co
+                uvs[li].uv = ((co.x + R) * kit.PX / 18.0, co.z * kit.PX / 18.0)
+    # Contorno fino (un cuarto de texel) en boquilla y mecha: con el de 1 texel el cordon se veia todo negro.
+    afinar(bomba, range(i0, len(me.vertices)), factor=0.25)
+    # Llama de la punta: gota de pixeles (base angosta, panza ancha, punta) y tres chispas sueltas.
+    # Solo se ve con la bomba encendida; en el recogible se oculta.
+    # Emision moderada (1.0): con mas, el borde naranja se quema a amarillo y no se distingue del centro.
+    bm = bmesh.new()                                          # origen: abajo al centro de la llama
+    caja(bm, -1 * px, 1 * px, -1 * px, 1 * px, 0, 1 * px, 0)             # base
+    caja(bm, -2 * px, 2 * px, -2 * px, 2 * px, 1 * px, 4 * px, 0)        # panza (centro amarillo claro)
+    caja(bm, -1 * px, 1 * px, -1 * px, 1 * px, 4 * px, 6 * px, 0)        # punta
+    for x, y, z in ((-4, 0.5, 5), (3.5, -1, 6.5), (-0.5, 1, 8.5)):       # chispas de 1 px
+        caja(bm, (x - 0.5) * px, (x + 0.5) * px, (y - 0.5) * px, (y + 0.5) * px, (z - 0.5) * px, (z + 0.5) * px, 1)
+    chispa = objeto("Bomba_Chispa", bm, [M('M_Chispa', 'T_Chispa', emision=1.0), M('M_Chispa_Luz', 'T_Chispa_Luz', emision=3.0)], col,
+                    uv={0: dict(tam=(4, 7), origen=(-2 * px, -2 * px, 0)), 1: dict(tam=(2, 2))}, con_contorno=False)
+    hijo(chispa, bomba, (MECHA_PUNTA[0] * px, 0, z_mecha + MECHA_PUNTA[1] * px))
+    return [bomba, chispa], [(col, "Detalles",
+            "Bomba 0.56 x 0.56 x 0.9 m con calavera al frente (-Y). Origen abajo al centro. "
+            "Bomba_Chispa es la llama de la mecha: se oculta mientras la bomba es un recogible.",
+            ("bomba", "recogible", "interactivo"))]
+
 PIEZAS = [
     ("muro_estandar.blend", p_muro_estandar),
     ("muro_vano.blend", p_muro_vano),
@@ -373,6 +554,9 @@ PIEZAS = [
     ("rocas.blend", p_rocas),
     ("pedestal.blend", p_pedestal),
     ("trampilla.blend", p_trampilla),
+    ("antorcha_pie.blend", p_antorcha_pie),
+    ("placa_presion.blend", p_placa_presion),
+    ("bomba.blend", p_bomba),
 ]
 
 # ------------------------------------------------------------------ verificacion y flujo

@@ -1,40 +1,63 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=8 format=3]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_recuadro"]
-content_margin_left = 14.0
-content_margin_top = 6.0
-content_margin_right = 14.0
-content_margin_bottom = 6.0
-bg_color = Color(0.08, 0.05, 0.04, 0.85)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.85, 0.66, 0.42, 1)
+[ext_resource type="Script" path="res://scripts/ui/InteractionPrompt.cs" id="1_logica"]
+[ext_resource type="Texture2D" path="res://assets/ui/globo.png" id="2_globo"]
+[ext_resource type="Texture2D" path="res://assets/ui/globo_cola.png" id="3_cola"]
+[ext_resource type="Texture2D" path="res://assets/ui/tecla_e.png" id="4_tecla"]
+[ext_resource type="Texture2D" path="res://assets/ui/tecla_e_pulsada.png" id="5_tecla_pulsada"]
+[ext_resource type="FontFile" path="res://assets/ui/fuente_pixel.png" id="6_fuente"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_globo"]
+content_margin_left = 5.0
+content_margin_top = 4.0
+content_margin_right = 5.0
+content_margin_bottom = 4.0
+texture = ExtResource("2_globo")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
 
 [node name="Aviso" type="CanvasLayer"]
+script = ExtResource("1_logica")
+TeclaNormal = ExtResource("4_tecla")
+TeclaPulsada = ExtResource("5_tecla_pulsada")
 
-[node name="Recuadro" type="PanelContainer" parent="."]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -80.0
-offset_top = -84.0
-offset_right = 80.0
-offset_bottom = -44.0
-grow_horizontal = 2
-grow_vertical = 0
+[node name="Globo" type="Control" parent="."]
+visible = false
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 0
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_recuadro")
 
-[node name="Texto" type="Label" parent="Recuadro"]
+[node name="Caja" type="PanelContainer" parent="Globo"]
+layout_mode = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_globo")
+
+[node name="Fila" type="HBoxContainer" parent="Globo/Caja"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.94, 0.85, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 22
-text = "E · Abrir"
-horizontal_alignment = 1
-vertical_alignment = 1
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="Tecla" type="TextureRect" parent="Globo/Caja/Fila"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("4_tecla")
+
+[node name="Texto" type="Label" parent="Globo/Caja/Fila"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(1, 0.953, 0.863, 1)
+theme_override_colors/font_shadow_color = Color(0.071, 0.047, 0.035, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("6_fuente")
+theme_override_font_sizes/font_size = 8
+text = "ABRIR"
+
+[node name="Cola" type="TextureRect" parent="Globo"]
+layout_mode = 0
+mouse_filter = 2
+texture = ExtResource("3_cola")

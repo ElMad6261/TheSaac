@@ -1,0 +1,21 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/blend/bomba.blend" id="1_modelo"]
+[ext_resource type="Script" path="res://scripts/items/Bomb.cs" id="2_logica"]
+[ext_resource type="PackedScene" path="res://scenes/items/explosion.tscn" id="3_explosion"]
+
+[node name="Bomba" type="Node3D"]
+script = ExtResource("2_logica")
+EscenaExplosion = ExtResource("3_explosion")
+
+[node name="Giro" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.766044, 0.642788, 0, -0.642788, 0.766044, 0, 0.28125, 0)
+
+[node name="Modelo" parent="Giro" instance=ExtResource("1_modelo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.28125, 0)
+
+[node name="Luz" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+light_color = Color(1, 0.7, 0.42, 1)
+light_energy = 1.2
+omni_range = 2.5

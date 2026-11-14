@@ -1,0 +1,43 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/rooms/sala_normal.tscn" id="1_base"]
+[ext_resource type="PackedScene" path="res://scenes/props/puerta/puerta_jefe.tscn" id="2_puerta"]
+[ext_resource type="PackedScene" path="res://scenes/props/antorcha_pie.tscn" id="3_antorcha"]
+[ext_resource type="PackedScene" path="res://scenes/props/puas.tscn" id="4_puas"]
+[ext_resource type="PackedScene" path="res://scenes/items/bomba_recogible.tscn" id="5_bomba"]
+
+[node name="SalaJefe" instance=ExtResource("1_base")]
+DoorScene = ExtResource("2_puerta")
+PremioAlDespejar = ExtResource("5_bomba")
+
+[node name="AntorchaNoroeste" parent="." instance=ExtResource("3_antorcha")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -2.2)
+Encendida = true
+UsableConE = false
+
+[node name="AntorchaNoreste" parent="." instance=ExtResource("3_antorcha")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -2.2)
+Encendida = true
+UsableConE = false
+
+[node name="AntorchaSuroeste" parent="." instance=ExtResource("3_antorcha")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 2.2)
+Encendida = true
+UsableConE = false
+
+[node name="AntorchaSureste" parent="." instance=ExtResource("3_antorcha")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 2.2)
+Encendida = true
+UsableConE = false
+
+[node name="Luz_Jefe" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
+light_color = Color(1, 0.3, 0.22, 1)
+light_energy = 1.4
+omni_range = 9.0
+
+[node name="Puas1" parent="." instance=ExtResource("4_puas")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0, -1.2)
+
+[node name="Puas2" parent="." instance=ExtResource("4_puas")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 2.2, 0, 1.2)
