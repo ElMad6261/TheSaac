@@ -1,11 +1,23 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="PackedScene" path="res://assets/blend/rocas.blend" id="1_rocas"]
+[ext_resource type="Script" path="res://scripts/props/Rock.cs" id="2_logica"]
+[ext_resource type="Texture2D" path="res://assets/texturas/T_Roca.png" id="3_textura"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_roca"]
 size = Vector3(0.9, 0.8, 0.95)
 
+[sub_resource type="StandardMaterial3D" id="Mat_escombro"]
+albedo_texture = ExtResource("3_textura")
+roughness = 1.0
+texture_filter = 0
+
+[sub_resource type="BoxMesh" id="Malla_escombro"]
+material = SubResource("Mat_escombro")
+size = Vector3(0.16, 0.16, 0.16)
+
 [node name="Roca" type="StaticBody3D"]
+script = ExtResource("2_logica")
 
 [node name="Modelo" parent="." instance=ExtResource("1_rocas")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
@@ -22,5 +34,23 @@ visible = false
 [node name="Colision" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
 shape = SubResource("BoxShape3D_roca")
+
+[node name="Escombros" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+emitting = false
+amount = 14
+lifetime = 0.7
+one_shot = true
+explosiveness = 1.0
+mesh = SubResource("Malla_escombro")
+emission_shape = 1
+emission_sphere_radius = 0.35
+direction = Vector3(0, 1, 0)
+spread = 75.0
+gravity = Vector3(0, -14, 0)
+initial_velocity_min = 2.5
+initial_velocity_max = 5.5
+scale_amount_min = 0.6
+scale_amount_max = 1.5
 
 [editable path="Modelo"]

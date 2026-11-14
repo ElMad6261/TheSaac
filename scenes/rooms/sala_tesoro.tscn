@@ -1,0 +1,34 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/rooms/sala_normal.tscn" id="1_base"]
+[ext_resource type="PackedScene" path="res://scenes/props/puerta/puerta_tesoro.tscn" id="2_puerta"]
+[ext_resource type="PackedScene" path="res://scenes/props/pedestal.tscn" id="3_pedestal"]
+[ext_resource type="PackedScene" path="res://scenes/props/antorcha_pie.tscn" id="4_antorcha"]
+[ext_resource type="PackedScene" path="res://scenes/items/bomba_recogible.tscn" id="5_bomba"]
+
+[node name="SalaTesoro" instance=ExtResource("1_base")]
+DoorScene = ExtResource("2_puerta")
+
+[node name="Pedestal" parent="." instance=ExtResource("3_pedestal")]
+
+[node name="AntorchaIzquierda" parent="." instance=ExtResource("4_antorcha")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 0, 0)
+Encendida = true
+UsableConE = false
+
+[node name="AntorchaDerecha" parent="." instance=ExtResource("4_antorcha")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 0, 0)
+Encendida = true
+UsableConE = false
+
+[node name="Luz_Tesoro" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0.4)
+light_color = Color(1, 0.82, 0.4, 1)
+light_energy = 1.2
+omni_range = 6.0
+
+[node name="Bomba1" parent="." instance=ExtResource("5_bomba")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 0, 1.4)
+
+[node name="Bomba2" parent="." instance=ExtResource("5_bomba")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 0, 1.4)

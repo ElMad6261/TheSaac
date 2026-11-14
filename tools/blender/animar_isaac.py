@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-animar_isaac.py - Ciclo de caminata y pose quieta de Isaac (Blender 5.1).
+animar_isaac.py - Ciclo de caminata, pose quieta y pose de dano de Isaac (Blender 5.1).
 
 Aplica al rig FK de isaac.blend las tecnicas del Taller 07 "El ciclo de caminata":
   1. Periodo de 24 fotogramas = 2 pasos de 12. Marcadores cada 3 fotogramas con las fases
@@ -18,11 +18,15 @@ Aplica al rig FK de isaac.blend las tecnicas del Taller 07 "El ciclo de caminata
   6. Todo ciclico: modificador Cycles en cada curva F, accion ciclica con rango manual 0-24 y
      Cycle-Aware Keying activado.
 
+  7. Pose de dano ("Herido"): no es del taller. Isaac se encoge (cadera baja, espalda y pecho hacia adelante),
+     sube los brazos doblados frente al pecho y tiembla. Es un bucle corto que Godot muestra un instante
+     cuando Isaac pierde vida (ver PlayerController.MostrarHerido).
+
 La cabeza (hueso Head) NO se anima aqui: el cuello (Neck) la mantiene estable y Godot la gira con las
 flechas (ver PlayerController.cs).
 
 Uso: abrir assets/blend/isaac.blend en Blender y ejecutar este script (Scripting > Run Script).
-Es repetible: borra las acciones "Caminar-loop" y "Quieto-loop" anteriores y las vuelve a generar.
+Es repetible: borra las acciones "Caminar-loop", "Quieto-loop" y "Herido-loop" anteriores y las vuelve a generar.
 Para cambiar el estilo basta con tocar los parametros de abajo (metros y radianes).
 """
 import bpy
@@ -37,6 +41,7 @@ PASO_FR = 12          # fotogramas de un paso
 
 ACCION_CAMINAR = "Caminar-loop"   # el sufijo "-loop" hace que Godot la importe en bucle
 ACCION_QUIETO = "Quieto-loop"
+ACCION_HERIDO = "Herido-loop"
 
 # --- Caminar
 LONG_PASO = 0.12                  # m que avanza el cuerpo en un paso (zancada = 2 x LONG_PASO)
@@ -57,6 +62,16 @@ MANO = math.radians(8)            # balanceo de la mano (retrasada 4 fotogramas)
 Q_AGACHE = 0.006
 Q_RESPIRA = 0.003
 Q_PECHO = math.radians(1.5)
+
+# --- Herido (pose de dano: encogido, con los brazos doblados frente al pecho, temblando)
+H_AGACHE = 0.020                  # cuanto baja la cadera (las rodillas se doblan solas por la IK)
+H_ESPALDA = math.radians(10)      # espalda hacia adelante
+H_PECHO = math.radians(16)        # pecho hacia adelante (se suma a la espalda)
+H_BRAZO = math.radians(70)        # el hombro lleva el brazo hacia adelante
+H_CIERRA = math.radians(55)       # y lo cierra hacia el centro del pecho
+H_CODO = math.radians(75)         # el codo se dobla hacia arriba
+H_MANO = math.radians(25)         # la mano sigue la curva del codo
+H_TIEMBLA = math.radians(3)       # temblor del pecho y de las manos (dos sacudidas por ciclo)
 
 # --- Geometria del pie respecto al tobillo en reposo: (dy hacia atras, dz hacia arriba)
 TALON_REL = (0.063, -0.050)
@@ -220,6 +235,23 @@ def torso_quieto(t):
     for lado in ('L', 'R'):
         for hueso, retraso in (('UpperArm', 0), ('LowerArm', 2), ('Hand', 4)):
             rot['%s.%s' % (hueso, lado)] = rx(math.radians(1.2) * math.sin(2.0 * math.pi * (t - 3 - retraso) / CICLO))
+    return rot, d
+
+def torso_herido(t):
+    """Pose de dano. Casi fija: solo cambia el temblor (dos sacudidas en los 24 fotogramas)."""
+    w = 2.0 * math.pi * t / CICLO
+    tiembla = H_TIEMBLA * math.sin(2.0 * w)
+    d = Vector((0.0, 0.0, -H_AGACHE))
+    rot = {
+        'Spine': rx(H_ESPALDA),                            # rx positivo = se inclina hacia adelante (-Y)
+        'Chest': rz(tiembla) @ rx(H_PECHO),
+    }
+    for lado, signo in (('L', 1.0), ('R', -1.0)):
+        # Primero el brazo va hacia adelante (rx negativo, igual que en la caminata) y despues se cierra
+        # hacia el centro (rz): el izquierdo gira a un lado y el derecho al otro, por eso el signo.
+        rot['UpperArm.' + lado] = rz(-signo * H_CIERRA) @ rx(-H_BRAZO)
+        rot['LowerArm.' + lado] = rx(-H_CODO)
+        rot['Hand.' + lado] = rx(-H_MANO + 2.0 * tiembla)
     return rot, d
 
 # ====================================================================== ANIMACION
@@ -388,6 +420,8 @@ def main(guardar=False):
                                     {'L': caminar, 'R': caminar}, PASO_FR)
     a_qui, s_qui = construir_accion(ACCION_QUIETO, torso_quieto,
                                     {'L': quieto, 'R': quieto}, 0)
+    a_her, s_her = construir_accion(ACCION_HERIDO, torso_herido,
+                                    {'L': quieto, 'R': quieto}, 0)      # pies plantados, como en Quieto
 
     # Marcadores del taller: Contacto / Bajo / Pase / Alto cada 3 fotogramas
     for m in list(scene.timeline_markers):
@@ -398,12 +432,13 @@ def main(guardar=False):
 
     r1 = verificar('Caminar', a_cam, s_cam)
     r2 = verificar('Quieto', a_qui, s_qui)
+    r3 = verificar('Herido', a_her, s_her)
 
     # Cada accion en su pista NLA (asi el exportador a glTF las saca como animaciones separadas)
     ad = arm.animation_data
     for pista in list(ad.nla_tracks):
         ad.nla_tracks.remove(pista)
-    for accion, slot in ((a_cam, s_cam), (a_qui, s_qui)):
+    for accion, slot in ((a_cam, s_cam), (a_qui, s_qui), (a_her, s_her)):
         pista = ad.nla_tracks.new()
         pista.name = accion.name
         franja = pista.strips.new(accion.name, 0, accion)
@@ -420,11 +455,11 @@ def main(guardar=False):
         p.rotation_euler = (0, 0, 0)
         p.scale = (1, 1, 1)
     scene.frame_set(0)
-    print("Listo: acciones %s y %s (%d fotogramas, %d fps)." % (ACCION_CAMINAR, ACCION_QUIETO, CICLO, FPS))
+    print("Listo: acciones %s, %s y %s (%d fotogramas, %d fps)." % (ACCION_CAMINAR, ACCION_QUIETO, ACCION_HERIDO, CICLO, FPS))
     if guardar:
         bpy.ops.wm.save_mainfile()
         print("Guardado:", bpy.data.filepath)
-    return r1, r2
+    return r1, r2, r3
 
 if __name__ == "__main__":
     main(guardar=False)

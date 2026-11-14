@@ -14,6 +14,10 @@ public partial class Interactor : Node
 	private InteractionPrompt _aviso;
 	private IInteractable _actual; // lo que se usaría si Isaac presiona E ahora
 
+	/// <summary>true si ahora mismo hay algo al alcance que se usaría con E (lo consulta BombPlacer:
+	/// con una puerta o antorcha cerca, la E es para ella y no se coloca bomba).</summary>
+	public bool TieneObjetivo => _actual != null;
+
 	public override void _Ready()
 	{
 		_jugador = GetParent<Node3D>();

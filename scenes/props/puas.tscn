@@ -1,0 +1,27 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/blend/pua.blend" id="1_modelo"]
+[ext_resource type="Script" path="res://scripts/components/DamageZone.cs" id="2_logica"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_puas"]
+size = Vector3(0.7, 0.6, 0.55)
+
+[node name="Puas" type="Area3D"]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("2_logica")
+
+[node name="Forma" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+shape = SubResource("BoxShape3D_puas")
+
+[node name="Modelo" parent="." instance=ExtResource("1_modelo")]
+
+[node name="Pua_A" parent="Modelo" index="0"]
+visible = false
+
+[node name="Pua_C" parent="Modelo" index="2"]
+visible = false
+
+[editable path="Modelo"]
