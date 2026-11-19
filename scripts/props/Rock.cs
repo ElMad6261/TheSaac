@@ -1,8 +1,8 @@
 using Godot;
 
 /// <summary>
-/// Roca que se rompe con una bomba (las lágrimas no la rompen: por eso no lleva HealthComponent).
-/// Va en la raíz de scenes/props/roca.tscn y de la roca graybox.
+/// Objeto que se rompe con una bomba (las lágrimas no lo rompen: por eso no lleva HealthComponent).
+/// Va en la raíz de scenes/props/roca.tscn, de la roca graybox y de scenes/props/vasija.tscn.
 ///
 /// Al recibir una explosión desaparece con su colisión. Si tiene un hijo "Escombros" (CPUParticles3D de
 /// un solo disparo), lo deja en la sala soltando pedazos y ese nodo se borra solo al terminar.
