@@ -57,32 +57,40 @@ def hijo(ob, padre, loc):
     return ob
 
 # ------------------------------------------------------------------ MUROS
+# Altura de pared del kit: 2.7 m (antes 3 m), para que la cámara en alto las enmarque mejor sin
+# tapar tanto techo vacío. El vano de la puerta (2.5 m) no cambia: solo se achica el dintel de
+# arriba, de 0.5 a 0.2 m. Si se vuelve a tocar, el pilar y la cornisa (aparte, en Blender) deben
+# quedar a la misma altura para que no se note el escalón en las esquinas.
+ALTO_MURO = 2.7
+
 def p_muro_estandar():
     col = kit.coleccion("Muros")
     bm = bmesh.new()
-    caja(bm, -1, 1, -0.25, 0.25, 0, 3)
+    caja(bm, -1, 1, -0.25, 0.25, 0, ALTO_MURO)
     ob = objeto("Muro_Estandar", bm, [M('M_Muro_Piedra', 'T_Muro_Piedra')], col,
-                uv={0: dict(tam=(64, 96), origen=(-1, -0.25, 0))}, con_contorno=False)
-    return [ob], [(ob, "Muros", "Muro recto 2 x 3 x 0.5 m. Origen abajo al centro; frente -Y.", ("muro", "estructura"))]
+                uv={0: dict(tam=(64, round(ALTO_MURO * 32)), origen=(-1, -0.25, 0))}, con_contorno=False)
+    return [ob], [(ob, "Muros", "Muro recto 2 x %.1f x 0.5 m. Origen abajo al centro; frente -Y." % ALTO_MURO,
+            ("muro", "estructura"))]
 
 def p_muro_vano():
     col = kit.coleccion("Muros")
     bm = bmesh.new()
-    prisma_partes(bm, [[(-1, 0), (-0.75, 0), (-0.75, 2.5), (-1, 2.5)],                       # pie izquierdo
-                       [(0.75, 0), (1, 0), (1, 2.5), (0.75, 2.5)],                           # pie derecho
-                       [(-1, 2.5), (-0.75, 2.5), (0.75, 2.5), (1, 2.5), (1, 3), (-1, 3)]],  # dintel
+    prisma_partes(bm, [[(-1, 0), (-0.75, 0), (-0.75, 2.5), (-1, 2.5)],                               # pie izquierdo
+                       [(0.75, 0), (1, 0), (1, 2.5), (0.75, 2.5)],                                   # pie derecho
+                       [(-1, 2.5), (-0.75, 2.5), (0.75, 2.5), (1, 2.5), (1, ALTO_MURO), (-1, ALTO_MURO)]],  # dintel
                   -0.25, 0.25)
     ob = objeto("Muro_Vano", bm, [M('M_Muro_Piedra', 'T_Muro_Piedra')], col,
-                uv={0: dict(tam=(64, 96), origen=(-1, -0.25, 0))}, con_contorno=False)
-    return [ob], [(ob, "Muros", "Muro 2 x 3 x 0.5 m con vano de 1.5 x 2.5 m para Puerta_Marco.", ("muro", "puerta", "estructura"))]
+                uv={0: dict(tam=(64, round(ALTO_MURO * 32)), origen=(-1, -0.25, 0))}, con_contorno=False)
+    return [ob], [(ob, "Muros", "Muro 2 x %.1f x 0.5 m con vano de 1.5 x 2.5 m para Puerta_Marco." % ALTO_MURO,
+            ("muro", "puerta", "estructura"))]
 
 def p_pilar():
     col = kit.coleccion("Muros")
     bm = bmesh.new()
-    caja(bm, -0.5, 0.5, -0.5, 0.5, 0, 3)
+    caja(bm, -0.5, 0.5, -0.5, 0.5, 0, ALTO_MURO)
     ob = objeto("Pilar", bm, [M('M_Pilar_Piedra', 'T_Pilar_Piedra')], col,
-                uv={0: dict(tam=(32, 96), origen=(-0.5, -0.5, 0))})
-    return [ob], [(ob, "Muros", "Pilar 1 x 3 x 1 m para cada union de muros.", ("pilar", "estructura"))]
+                uv={0: dict(tam=(32, round(ALTO_MURO * 32)), origen=(-0.5, -0.5, 0))})
+    return [ob], [(ob, "Muros", "Pilar 1 x %.1f x 1 m para cada union de muros." % ALTO_MURO, ("pilar", "estructura"))]
 
 # ------------------------------------------------------------------ PISOS Y TECHOS
 def p_piso():

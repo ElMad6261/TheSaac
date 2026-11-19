@@ -43,8 +43,16 @@ public partial class PlayerController : CharacterBody3D
 	/// </summary>
 	[Export(PropertyHint.Range, "0.8,1.1,0.01")] public float HeadScale { get; set; } = 0.9f;
 
-	/// <summary>Grados que la cabeza se echa hacia atrás en la pose de daño: desde la cámara de arriba se le ve la cara.</summary>
-	[Export] public float HurtHeadTilt { get; set; } = 22.0f;
+	/// <summary>
+	/// Grados que la cabeza está SIEMPRE echada hacia atrás (cuello hacia arriba), para compensar la
+	/// cámara en alto: así se ven ambos ojos, las lágrimas y la boca en vez de solo la coronilla.
+	/// No depende de hacia dónde mire Isaac: si mira hacia la cámara, se le ve mejor la cara; si mira
+	/// hacia el fondo, sigue viéndose la nuca (inclinada), nunca "hace trampa" mostrando la cara de frente.
+	/// </summary>
+	[Export] public float HeadTiltBase { get; set; } = 16.0f;
+
+	/// <summary>Grados EXTRA (sobre HeadTiltBase) que la cabeza se echa hacia atrás en la pose de daño.</summary>
+	[Export] public float HurtHeadTilt { get; set; } = 12.0f;
 
 	// Segundos que dura el fundido al cambiar entre "Quieto" y "Caminar".
 	private const double AnimationBlend = 0.15;
@@ -206,8 +214,9 @@ public partial class PlayerController : CharacterBody3D
 		float weight = 1.0f - Mathf.Exp(-HeadTurnSpeed * dt);
 		_headYaw = Mathf.LerpAngle(_headYaw, targetYaw, weight);
 
-		// Pose de daño: la cabeza se echa hacia atrás (y vuelve sola al terminar), con el mismo giro suave.
-		float targetTilt = _hurtTime > 0 ? Mathf.DegToRad(HurtHeadTilt) : 0.0f;
+		// La cabeza siempre está un poco echada hacia atrás (HeadTiltBase); en la pose de daño se suma
+		// un extra (HurtHeadTilt) y vuelve sola a la base al terminar. Mismo giro suave que el yaw.
+		float targetTilt = Mathf.DegToRad(HeadTiltBase + (_hurtTime > 0 ? HurtHeadTilt : 0.0f));
 		_headTilt = Mathf.Lerp(_headTilt, targetTilt, weight);
 
 		// El giro es alrededor del eje vertical del hueso (su eje Y local), partiendo de la pose de reposo.

@@ -5,10 +5,10 @@
 [ext_resource type="PackedScene" uid="uid://bug8g88do25fc" path="res://assets/blend/cornisa.blend" id="3_yj5he"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_lado"]
-size = Vector3(0.25, 3, 0.5)
+size = Vector3(0.25, 2.7, 0.5)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dintel"]
-size = Vector3(1.5, 0.5, 0.5)
+size = Vector3(1.5, 0.2, 0.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_umbral"]
 albedo_texture = ExtResource("2_piso")
@@ -29,15 +29,15 @@ size = Vector3(1.5, 0.1, 0.75)
 [node name="Modelo" parent="." unique_id=2072017251 instance=ExtResource("1_vano")]
 
 [node name="Lado_Izquierdo" type="CollisionShape3D" parent="." unique_id=67067379]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.875, 1.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.875, 1.35, 0)
 shape = SubResource("BoxShape3D_lado")
 
 [node name="Lado_Derecho" type="CollisionShape3D" parent="." unique_id=455124016]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.875, 1.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.875, 1.35, 0)
 shape = SubResource("BoxShape3D_lado")
 
 [node name="Dintel" type="CollisionShape3D" parent="." unique_id=112724276]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.75, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
 shape = SubResource("BoxShape3D_dintel")
 
 [node name="Umbral" type="MeshInstance3D" parent="." unique_id=1511860194]

@@ -17,7 +17,7 @@ background_mode = 1
 background_color = Color(0.02, 0.016, 0.014, 1)
 ambient_light_source = 2
 ambient_light_color = Color(0.55, 0.45, 0.4, 1)
-ambient_light_energy = 0.5
+ambient_light_energy = 0.65
 tonemap_mode = 2
 glow_enabled = true
 
@@ -29,16 +29,15 @@ environment = SubResource("Environment_sotano")
 [node name="Luz_General" type="DirectionalLight3D" parent="." unique_id=742820551]
 transform = Transform3D(0.9063, -0.3462, 0.2424, 0, 0.5736, 0.8192, -0.4226, -0.7424, 0.5199, 0, 10, 0)
 light_color = Color(1, 0.9, 0.8, 1)
-light_energy = 0.35
+light_energy = 0.4
 shadow_enabled = true
+shadow_blur = 2.5
 
 [node name="Camara" type="Camera3D" parent="." unique_id=399616993]
 transform = Transform3D(1, 0, 0, 0, 0.5, 0.8660254, 0, -0.8660254, 0.5, 0, 15.3224, 8.05)
 current = true
 fov = 32.0
 script = ExtResource("3_camara")
-Pitch = 50.0
-Distance = 15.0
 
 [node name="SalaInicio" parent="." unique_id=1228171284 instance=ExtResource("1_sala")]
 DoorNorth = true
